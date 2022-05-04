@@ -43,7 +43,7 @@ public class JusanSpringCliApplication {
             case "4" -> System.out.println("withdraw");
             case "5" -> System.out.println("transfer");
             case "6" -> System.out.println("this message");
-            case "7" -> System.out.println("exit");
+            case "7" -> System.out.println("Application closed");
             default -> System.out.println("Not expected command");
         }
     }
