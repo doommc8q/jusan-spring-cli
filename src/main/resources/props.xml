@@ -8,8 +8,6 @@
         <constructor-arg type="java.util.Scanner" value="FIXED"/>
     </bean>
 
-    <bean id="client" class="com.example.demo.Client">
-        <constructor-arg ref="service"/>
-    </bean>
+
 
 </beans>
