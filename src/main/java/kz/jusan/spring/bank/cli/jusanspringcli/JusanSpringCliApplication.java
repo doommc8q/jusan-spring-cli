@@ -13,10 +13,15 @@ public class JusanSpringCliApplication {
         printCommands();
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("props.xml");
         try (Scanner scanner = new Scanner(System.in)) {
+            MyCLI myCLI = applicationContext.getBean(MyCLI.class);
+            AccountBasicCLI accountBasicCLI = applicationContext.getBean(AccountBasicCLI.class);
+
             while (true) {
-                MyCLI myCLI = applicationContext.getBean((MyCLI.class));
                 String input = scanner.next();
                 commandOperations(input);
+                if (input.equals("7")) {
+                    break;
+                }
             }
         }
 //		SpringApplication.run(JusanSpringCliApplication.class, args);

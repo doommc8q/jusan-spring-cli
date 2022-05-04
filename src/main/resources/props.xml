@@ -5,7 +5,7 @@
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="myCLI" class="kz.jusan.spring.bank.cli.jusanspringcli.MyCLI">
-        <constructor-arg type="java.util.Scanner" value="FIXED"/>
+        <constructor-arg type="java.util.Scanner" value=""/>
     </bean>
 
 

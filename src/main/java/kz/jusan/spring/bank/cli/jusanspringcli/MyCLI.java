@@ -18,6 +18,6 @@ public class MyCLI implements CLIUI {
     }
 
     public AccountType requestAccountType() {
-        return new AccountType();
+        return new AccountType(scanner.next());
     }
 }
