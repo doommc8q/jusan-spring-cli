@@ -31,6 +31,11 @@ public class ConnectConfiguration {
     }
 
     @Bean
+    public AccountDAO accountDAO() {
+        return new MemoryAccountDAO();
+    }
+
+    @Bean
     public AccountListingServiceImpl accountListingServiceImpl() {
         return new AccountListingServiceImpl();
     }
@@ -41,7 +46,7 @@ public class ConnectConfiguration {
     }
 
     @Bean
-    public BankCore bankCore(AccountCreationServiceImpl account){
+    public BankCore bankCore(AccountCreationServiceImpl account) {
         return new BankCore(account);
     }
 
@@ -54,10 +59,4 @@ public class ConnectConfiguration {
     public MemoryAccountDAO memoryAccountDAO() {
         return new MemoryAccountDAO();
     }
-
-    @Bean
-    public MyCLI myCLI(){
-        return new MyCLI();
-    }
-
 }

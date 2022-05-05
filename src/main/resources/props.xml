@@ -22,6 +22,9 @@
         <constructor-arg ref="memoryAccountDAO"/>
     </bean>
 
+    <bean id="createAccountOperationUI" class="kz.jusan.spring.bank.cli.jusanspringcli.CreateAccountOperationUI"
+          abstract="true"/>
+
     <bean id="accountDAO" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountDAO" abstract="true"/>
 
     <bean id="accountListingService" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountListingService"
