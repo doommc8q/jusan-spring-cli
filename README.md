@@ -1,4 +1,7 @@
 ## Solid Bank App 
+### Running: 
+    To run download jusan-spring-cli.jar into out/artifacts/jusan-spring-cli_jar and paste command: 
+`java -jar jusan-spring-cli.jar`
 ### Welcome to CLI bank service.
                 Operations:
                 1 - show accounts
