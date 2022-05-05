@@ -2,7 +2,7 @@ package kz.jusan.spring.bank.cli.jusanspringcli;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Scanner;
 
@@ -11,10 +11,10 @@ import java.util.Scanner;
 public class JusanSpringCliApplication {
     public static void main(String[] args) {
         printCommands();
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("props.xml");
+        ApplicationContext context = new AnnotationConfigApplicationContext(ConnectConfiguration.class);
         try (Scanner scanner = new Scanner(System.in)) {
-            MyCLI myCLI = applicationContext.getBean(MyCLI.class);
-            AccountBasicCLI accountBasicCLI = applicationContext.getBean(AccountBasicCLI.class);
+            MyCLI myCLI = context.getBean(MyCLI.class);
+            AccountBasicCLI accountBasicCLI = context.getBean(AccountBasicCLI.class);
 
             while (true) {
                 String input = scanner.next();

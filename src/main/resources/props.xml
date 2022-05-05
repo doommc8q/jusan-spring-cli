@@ -4,10 +4,28 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="myCLI" class="kz.jusan.spring.bank.cli.jusanspringcli.MyCLI">
-        <constructor-arg type="java.util.Scanner" value=""/>
+    <bean id="myCLI" class="kz.jusan.spring.bank.cli.jusanspringcli.MyCLI"/>
+
+    <bean id="accountBasicCLI" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountBasicCLI">
+        <constructor-arg index="0" ref="myCLI"/>
+        <constructor-arg index="1" ref="bankCore"/>
+        <constructor-arg index="2" ref="accountListingServiceImpl"/>
     </bean>
 
+    <bean id="bankCore" class="kz.jusan.spring.bank.cli.jusanspringcli.BankCore">
+    </bean>
 
+    <bean id="accountCreationService" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountCreationService"
+          abstract="true"/>
 
+    <bean id="accountCreationServiceImpl" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountCreationServiceImpl">
+        <constructor-arg ref="memoryAccountDAO"/>
+    </bean>
+
+    <bean id="accountDAO" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountDAO" abstract="true"/>
+
+    <bean id="accountListingService" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountListingService"
+          abstract="true"/>
+    <bean id="accountListingServiceImpl" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountListingServiceImpl"/>
+    <bean id="memoryAccountDAO" class="kz.jusan.spring.bank.cli.jusanspringcli.MemoryAccountDAO"/>
 </beans>

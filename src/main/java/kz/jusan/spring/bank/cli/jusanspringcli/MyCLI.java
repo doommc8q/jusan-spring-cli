@@ -9,6 +9,10 @@ public class MyCLI implements CLIUI {
         this.scanner = scanner;
     }
 
+    MyCLI() {
+        this.scanner = new Scanner(System.in);
+    }
+
     public double requestClientAmount() {
         return 0.0;
     }

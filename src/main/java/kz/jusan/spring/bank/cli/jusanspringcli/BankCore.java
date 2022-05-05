@@ -9,12 +9,12 @@ public class BankCore {
     private AccountCreationService accountCreation;
 
     public BankCore(AccountCreationService accountCreation) {
-
+        this.accountCreation = accountCreation;
     }
 
     public void createNewAccount(AccountType accountType, String clientID) {
     }
 
-    public void incrementLastAccountNumber() {
+    private void incrementLastAccountNumber() {
     }
 }
