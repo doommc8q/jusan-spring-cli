@@ -45,7 +45,6 @@ public class MemoryAccountDAO implements AccountDAO {
 
     @Override
     public AccountWithdraw getClientWithdrawAccount(String clientID, String accountID) {
-
         System.out.println("Method not expected");
         return null;
     }
@@ -53,7 +52,6 @@ public class MemoryAccountDAO implements AccountDAO {
     @Override
     public Account getClientAccount(String clientID, String accountID) {
         Account account = null;
-        System.out.println("12");
         for (Account a : accountList) {
             if (a.getClientID().equals(clientID) && accountID.equals(a.getClientID()))
                 account = a;

@@ -22,6 +22,11 @@ public class MyCLI implements CLIUI {
     }
 
     public AccountType requestAccountType() {
-        return new AccountType(scanner.next());
+        String accountType = scanner.next();
+        if (!accountType.equals("CHECKING") && !accountType.equals("FIXED") && !accountType.equals("SAVING")) {
+            System.out.println("Unexpected type");
+            return null;
+        }
+        return new AccountType(accountType);
     }
 }

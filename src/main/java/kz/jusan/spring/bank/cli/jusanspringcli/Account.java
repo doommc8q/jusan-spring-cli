@@ -68,6 +68,6 @@ public class Account {
 
     @Override
     public String toString() {
-        return String.format("Account{, id='%03d%06d', clientID='%s', balance=%.1f}", bankID, id, clientID, balance);
+        return String.format("Account{, id='%03d%06d', clientID='%s', balance=%.1f}", 1, id, clientID, balance);
     }
 }

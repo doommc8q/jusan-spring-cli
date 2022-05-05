@@ -15,7 +15,6 @@ public class JusanSpringCliApplication {
         try (Scanner scanner = new Scanner(System.in)) {
             MyCLI myCLI = context.getBean(MyCLI.class);
             AccountBasicCLI accountBasicCLI = context.getBean(AccountBasicCLI.class);
-
             while (true) {
                 String input = scanner.next();
                 commandOperations(input, myCLI, accountBasicCLI);
@@ -23,6 +22,8 @@ public class JusanSpringCliApplication {
                     break;
                 }
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
