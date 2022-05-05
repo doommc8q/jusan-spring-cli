@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        https://www.springframework.org/schema/beans/spring-beans.xsd">
+        https://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
     <bean id="myCLI" class="kz.jusan.spring.bank.cli.jusanspringcli.MyCLI"/>
 
@@ -12,8 +13,6 @@
         <constructor-arg index="2" ref="accountListingServiceImpl"/>
     </bean>
 
-    <bean id="bankCore" class="kz.jusan.spring.bank.cli.jusanspringcli.BankCore">
-    </bean>
 
     <bean id="accountCreationService" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountCreationService"
           abstract="true"/>
@@ -22,13 +21,19 @@
         <constructor-arg ref="memoryAccountDAO"/>
     </bean>
 
-    <bean id="createAccountOperationUI" class="kz.jusan.spring.bank.cli.jusanspringcli.CreateAccountOperationUI"
-          abstract="true"/>
-
     <bean id="accountDAO" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountDAO" abstract="true"/>
 
     <bean id="accountListingService" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountListingService"
           abstract="true"/>
+
     <bean id="accountListingServiceImpl" class="kz.jusan.spring.bank.cli.jusanspringcli.AccountListingServiceImpl"/>
+
+    <bean id="bankCore" class="kz.jusan.spring.bank.cli.jusanspringcli.BankCore"/>
+
+    <bean id="createAccountOperationUI" class="kz.jusan.spring.bank.cli.jusanspringcli.CreateAccountOperationUI"
+          abstract="true"/>
+
     <bean id="memoryAccountDAO" class="kz.jusan.spring.bank.cli.jusanspringcli.MemoryAccountDAO"/>
+
+    <context:component-scan base-package="kz.jusan.spring.bank.cli.jusanspringcli"/>
 </beans>

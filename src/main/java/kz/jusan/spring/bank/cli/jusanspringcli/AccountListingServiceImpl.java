@@ -5,8 +5,12 @@ import java.util.List;
 public class AccountListingServiceImpl implements AccountListingService {
     private AccountDAO accountDAO;
 
+    public AccountListingServiceImpl(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
+    }
+
     @Override
-    public Account getClientAccount(String clientID, String accountID) {
+    public Account getClientAccounts(String clientID, String accountID) {
         return accountDAO.getClientAccount(clientID, accountID);
     }
 
@@ -16,8 +20,8 @@ public class AccountListingServiceImpl implements AccountListingService {
     }
 
     @Override
-    public List<Account> getClientAccount(String clientID) {
-        return accountDAO.getClientAccounts(clientID);
+    public List<Account> getClientAccounts(String clientID) {
+        return this.accountDAO.getClientAccounts(clientID);
     }
 
     @Override

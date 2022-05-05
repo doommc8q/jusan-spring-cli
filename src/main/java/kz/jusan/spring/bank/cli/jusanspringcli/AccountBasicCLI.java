@@ -1,5 +1,7 @@
 package kz.jusan.spring.bank.cli.jusanspringcli;
 
+import java.util.List;
+
 public class AccountBasicCLI {
     private CreateAccountOperationUI createAccountOperationUI;
     private BankCore bankCore;
@@ -10,7 +12,15 @@ public class AccountBasicCLI {
         this.bankCore = bankCore;
         this.createAccountOperationUI = createAccountOperationUI;
     }
-    public void createAccountRequest(String clientID) {}
-    public void getAccount(String clientID){}
+
+    public void createAccountRequest(String clientID) {
+        AccountType accountType = createAccountOperationUI.requestAccountType();
+        bankCore.createNewAccount(accountType, clientID);
+    }
+
+    public void getAccount(String clientID) {
+        List<Account> accounts = accountListing.getClientAccounts(clientID);
+        System.out.println(accounts);
+    }
 
 }

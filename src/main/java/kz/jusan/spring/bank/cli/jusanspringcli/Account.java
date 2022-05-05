@@ -3,8 +3,9 @@ package kz.jusan.spring.bank.cli.jusanspringcli;
 // В данном проекте основным доменом является счет Account
 public class Account {
     private AccountType accountType;
-    private String id;
+    private long id;
     private String clientID;
+    private long bankID;
     private double balance;
     private boolean withdrawAllowed;
 
@@ -24,11 +25,11 @@ public class Account {
         this.accountType = accountType;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -48,9 +49,18 @@ public class Account {
         this.withdrawAllowed = withdrawAllowed;
     }
 
-    public Account(AccountType accountType, String id, String clientID, double balance, boolean withdrawAllowed) {
+    public void setBankID(long bankID) {
+        this.bankID = bankID;
+    }
+
+    public long getBankID() {
+        return bankID;
+    }
+
+    public Account(AccountType accountType, long bankID, long id, String clientID, double balance, boolean withdrawAllowed) {
         this.accountType = accountType;
         this.id = id;
+        this.bankID = bankID;
         this.clientID = clientID;
         this.balance = balance;
         this.withdrawAllowed = withdrawAllowed;
@@ -58,7 +68,6 @@ public class Account {
 
     @Override
     public String toString() {
-        return String.format("Account{, id='%03d%06d', clientID='%s', balance='%.1f'}", id, clientID, balance);
+        return String.format("Account{, id='%03d%06d', clientID='%s', balance=%.1f}", bankID, id, clientID, balance);
     }
-
 }

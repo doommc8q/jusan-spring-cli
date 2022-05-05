@@ -5,7 +5,7 @@ import java.util.List;
 
 //  нашем случае, все счета будут храниться в памяти - MemoryAccountDAO.
 public class MemoryAccountDAO implements AccountDAO {
-    public List<Account> accountList = new ArrayList<>();
+    private List<Account> accountList = new ArrayList<>();
 
     @Override
     public List<Account> getClientAccounts(String clientID) {
@@ -53,6 +53,7 @@ public class MemoryAccountDAO implements AccountDAO {
     @Override
     public Account getClientAccount(String clientID, String accountID) {
         Account account = null;
+        System.out.println("12");
         for (Account a : accountList) {
             if (a.getClientID().equals(clientID) && accountID.equals(a.getClientID()))
                 account = a;

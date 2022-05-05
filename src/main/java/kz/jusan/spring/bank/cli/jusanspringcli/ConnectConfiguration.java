@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class ConnectConfiguration {
 
     @Bean
-    public Scanner getScanner() {
+    public Scanner scan() {
         return new Scanner(System.in);
     }
 
@@ -36,13 +36,13 @@ public class ConnectConfiguration {
     }
 
     @Bean
-    public AccountListingServiceImpl accountListingServiceImpl() {
-        return new AccountListingServiceImpl();
+    public AccountListingServiceImpl accountListingServiceImpl(MemoryAccountDAO memoryAccountDAO) {
+        return new AccountListingServiceImpl(memoryAccountDAO);
     }
 
     @Bean
-    public AccountListingService accountListingService() {
-        return new AccountListingServiceImpl();
+    public AccountListingService accountListingService(MemoryAccountDAO memoryAccountDAO) {
+        return new AccountListingServiceImpl(memoryAccountDAO);
     }
 
     @Bean
@@ -59,4 +59,5 @@ public class ConnectConfiguration {
     public MemoryAccountDAO memoryAccountDAO() {
         return new MemoryAccountDAO();
     }
+
 }

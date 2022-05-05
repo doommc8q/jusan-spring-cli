@@ -18,13 +18,12 @@ public class JusanSpringCliApplication {
 
             while (true) {
                 String input = scanner.next();
-                commandOperations(input);
+                commandOperations(input, myCLI, accountBasicCLI);
                 if (input.equals("7")) {
                     break;
                 }
             }
         }
-//		SpringApplication.run(JusanSpringCliApplication.class, args);
     }
 
     public static void printCommands() {
@@ -40,10 +39,17 @@ public class JusanSpringCliApplication {
                 7 - exit""");
     }
 
-    public static void commandOperations(String commandNumber) {
+    public static void commandOperations(String commandNumber, MyCLI myCLI, AccountBasicCLI accountBasicCLI) {
         switch (commandNumber) {
-            case "1" -> System.out.println("show accounts");
-            case "2" -> System.out.println("create account");
+            case "1" -> {
+                accountBasicCLI.getAccount("1");
+            }
+            case "2" -> {
+                System.out.println("""
+                        Choose account type
+                        [CHECKING, SAVING, FIXED]""");
+                accountBasicCLI.createAccountRequest("1");
+            }
             case "3" -> System.out.println("deposit");
             case "4" -> System.out.println("withdraw");
             case "5" -> System.out.println("transfer");
