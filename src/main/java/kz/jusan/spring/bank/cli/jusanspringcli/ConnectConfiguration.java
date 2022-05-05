@@ -21,8 +21,8 @@ public class ConnectConfiguration {
     }
 
     @Bean
-    public AccountCreationService accountCreationService(AccountDAO accountDAO) {
-        return new AccountCreationServiceImpl(accountDAO);
+    public AccountCreationService accountCreationService(MemoryAccountDAO memoryAccountDAO) {
+        return new AccountCreationServiceImpl(memoryAccountDAO);
     }
 
     @Bean
