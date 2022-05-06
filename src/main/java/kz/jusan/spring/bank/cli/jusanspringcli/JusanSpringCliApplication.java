@@ -3,6 +3,7 @@ package kz.jusan.spring.bank.cli.jusanspringcli;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import java.util.Scanner;
 
@@ -10,14 +11,13 @@ import java.util.Scanner;
 @SpringBootApplication
 public class JusanSpringCliApplication {
     public static void main(String[] args) {
+        ApplicationContext context = new FileSystemXmlApplicationContext("src/main/resources/props.xml");
         printCommands();
-        ApplicationContext context = new AnnotationConfigApplicationContext(ConnectConfiguration.class);
         try (Scanner scanner = new Scanner(System.in)) {
-            MyCLI myCLI = context.getBean(MyCLI.class);
             AccountBasicCLI accountBasicCLI = context.getBean(AccountBasicCLI.class);
             while (true) {
                 String input = scanner.next();
-                commandOperations(input, myCLI, accountBasicCLI);
+                commandOperations(input, accountBasicCLI);
                 if (input.equals("7")) {
                     break;
                 }
@@ -40,7 +40,7 @@ public class JusanSpringCliApplication {
                 7 - exit""");
     }
 
-    public static void commandOperations(String commandNumber, MyCLI myCLI, AccountBasicCLI accountBasicCLI) {
+    public static void commandOperations(String commandNumber, AccountBasicCLI accountBasicCLI) {
         switch (commandNumber) {
             case "1" -> {
                 accountBasicCLI.getAccount("1");
@@ -54,7 +54,7 @@ public class JusanSpringCliApplication {
             case "3" -> System.out.println("deposit");
             case "4" -> System.out.println("withdraw");
             case "5" -> System.out.println("transfer");
-            case "6" -> System.out.println("this message");
+            case "6" -> printCommands();
             case "7" -> System.out.println("Application closed");
             default -> System.out.println("Not expected command");
         }

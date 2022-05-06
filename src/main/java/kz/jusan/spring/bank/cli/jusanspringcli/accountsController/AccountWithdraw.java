@@ -1,4 +1,7 @@
-package kz.jusan.spring.bank.cli.jusanspringcli;
+package kz.jusan.spring.bank.cli.jusanspringcli.accountsController;
+
+import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.Account;
 
 // При работе с AccountWithdraw можно снимать и вносить деньги.
 public class AccountWithdraw extends Account {

@@ -27,6 +27,6 @@ public class MyCLI implements CLIUI {
             System.out.println("Unexpected type");
             return null;
         }
-        return new AccountType(accountType);
+        return AccountType.valueOf(accountType);
     }
 }

@@ -1,4 +1,6 @@
-package kz.jusan.spring.bank.cli.jusanspringcli;
+package kz.jusan.spring.bank.cli.jusanspringcli.accountsController;
+
+import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
 
 // Checking счетов можно снимать и пополнять
 public class CheckingAccount extends AccountWithdraw {

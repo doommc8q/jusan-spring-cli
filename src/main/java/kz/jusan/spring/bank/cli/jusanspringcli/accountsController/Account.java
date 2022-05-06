@@ -1,7 +1,9 @@
-package kz.jusan.spring.bank.cli.jusanspringcli;
+package kz.jusan.spring.bank.cli.jusanspringcli.accountsController;
+
+import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
 
 // В данном проекте основным доменом является счет Account
-public class Account {
+public abstract class Account {
     private AccountType accountType;
     private long id;
     private String clientID;
@@ -68,6 +70,6 @@ public class Account {
 
     @Override
     public String toString() {
-        return String.format("Account{, id='%03d%06d', clientID='%s', balance=%.1f}", 1, id, clientID, balance);
+        return String.format("Account{accountType='%s', id='%03d%06d', clientID='%s', balance=%.1f}", accountType, bankID, id, clientID, balance);
     }
 }
