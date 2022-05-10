@@ -1,14 +1,13 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.accountCreationServiceController;
+package kz.jusan.spring.bank.cli.jusanspringcli.account;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.Account;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.CheckingAccount;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.FixedAccount;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.SavingAccount;
-import kz.jusan.spring.bank.cli.jusanspringcli.daoController.AccountDAO;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.CheckingAccount;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.FixedAccount;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.SavingAccount;
+import kz.jusan.spring.bank.cli.jusanspringcli.dao.AccountDAO;
 
 public class AccountCreationServiceImpl implements AccountCreationService {
-    private AccountDAO accountDAO;
+    private final AccountDAO accountDAO;
 
     public AccountCreationServiceImpl(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;

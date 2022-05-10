@@ -1,8 +1,8 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.daoController;
+package kz.jusan.spring.bank.cli.jusanspringcli.dao;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.Account;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.AccountWithdraw;
+import kz.jusan.spring.bank.cli.jusanspringcli.account.Account;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.AccountWithdraw;
 
 import java.util.List;
 

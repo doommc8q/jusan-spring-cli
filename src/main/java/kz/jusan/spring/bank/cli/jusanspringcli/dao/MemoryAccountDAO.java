@@ -1,15 +1,15 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.daoController;
+package kz.jusan.spring.bank.cli.jusanspringcli.dao;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.Account;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.AccountWithdraw;
+import kz.jusan.spring.bank.cli.jusanspringcli.account.Account;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.AccountWithdraw;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //  нашем случае, все счета будут храниться в памяти - MemoryAccountDAO.
 public class MemoryAccountDAO implements AccountDAO {
-    private List<Account> accountList = new ArrayList<>();
+    private final List<Account> accountList = new ArrayList<>();
 
     @Override
     public List<Account> getClientAccounts(String clientID) {

@@ -1,6 +1,6 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.accountCreationServiceController;
+package kz.jusan.spring.bank.cli.jusanspringcli.account;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 
 // AccountCreationService отдельный бизнес процесс. имеет интерфейс для изменения данных AccountDAO
 public interface AccountCreationService {

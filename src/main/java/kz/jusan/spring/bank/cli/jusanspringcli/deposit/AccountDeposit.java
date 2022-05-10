@@ -1,7 +1,7 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.accountsController;
+package kz.jusan.spring.bank.cli.jusanspringcli.deposit;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.Account;
+import kz.jusan.spring.bank.cli.jusanspringcli.account.Account;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 
 // AccountDeposit можно только снимать
 public class AccountDeposit extends Account {

@@ -1,6 +1,6 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.accountsController;
+package kz.jusan.spring.bank.cli.jusanspringcli.account;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 
 // В данном проекте основным доменом является счет Account
 public abstract class Account {

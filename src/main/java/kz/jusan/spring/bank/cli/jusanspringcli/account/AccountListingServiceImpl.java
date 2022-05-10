@@ -1,14 +1,13 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.accountListingServiceContorller;
+package kz.jusan.spring.bank.cli.jusanspringcli.account;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.Account;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.AccountWithdraw;
-import kz.jusan.spring.bank.cli.jusanspringcli.daoController.AccountDAO;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.dao.AccountDAO;
+import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.AccountWithdraw;
 
 import java.util.List;
 
 public class AccountListingServiceImpl implements AccountListingService {
-    private AccountDAO accountDAO;
+    private final AccountDAO accountDAO;
 
     public AccountListingServiceImpl(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;

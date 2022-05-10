@@ -1,6 +1,7 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.accountsController;
+package kz.jusan.spring.bank.cli.jusanspringcli.accountsType;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.deposit.AccountDeposit;
 
 // Fixed счета нельзя снимать деньги
 public class FixedAccount extends AccountDeposit {

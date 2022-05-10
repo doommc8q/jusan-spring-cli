@@ -1,6 +1,7 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.accountsController;
+package kz.jusan.spring.bank.cli.jusanspringcli.accountsType;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.AccountWithdraw;
 
 // Saving счетов можно снимать и пополнять
 public class SavingAccount extends AccountWithdraw {

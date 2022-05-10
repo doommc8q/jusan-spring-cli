@@ -1,8 +1,19 @@
-package kz.jusan.spring.bank.cli.jusanspringcli;
+package kz.jusan.spring.bank.cli.jusanspringcli.cli;
+
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
+import kz.jusan.spring.bank.cli.jusanspringcli.cli.CLIUI;
 
 import java.util.Scanner;
 
 public class MyCLI implements CLIUI {
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
     private Scanner scanner;
 
     public MyCLI(Scanner scanner) {

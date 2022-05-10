@@ -1,14 +1,16 @@
-package kz.jusan.spring.bank.cli.jusanspringcli;
+package kz.jusan.spring.bank.cli.jusanspringcli.cli;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.accountListingServiceContorller.AccountListingService;
-import kz.jusan.spring.bank.cli.jusanspringcli.accountsController.Account;
+import kz.jusan.spring.bank.cli.jusanspringcli.account.AccountListingService;
+import kz.jusan.spring.bank.cli.jusanspringcli.bank.BankCore;
+import kz.jusan.spring.bank.cli.jusanspringcli.account.Account;
+import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 
 import java.util.List;
 
 public class AccountBasicCLI {
-    private CreateAccountOperationUI createAccountOperationUI;
-    private BankCore bankCore;
-    private AccountListingService accountListing;
+    private final CreateAccountOperationUI createAccountOperationUI;
+    private final BankCore bankCore;
+    private final AccountListingService accountListing;
 
     public AccountBasicCLI(CreateAccountOperationUI createAccountOperationUI, BankCore bankCore, AccountListingService accountListing) {
         this.accountListing = accountListing;
@@ -24,9 +26,8 @@ public class AccountBasicCLI {
         bankCore.createNewAccount(accountType, clientID);
     }
 
-    public void getAccount(String clientID) {
+    public void getAccounts(String clientID) {
         List<Account> accounts = accountListing.getClientAccounts(clientID);
         System.out.println(accounts);
     }
-
 }
