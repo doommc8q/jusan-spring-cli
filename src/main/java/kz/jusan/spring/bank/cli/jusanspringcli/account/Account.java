@@ -1,8 +1,12 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.account;
 
 import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 // В данном проекте основным доменом является счет Account
+@Data
+@AllArgsConstructor
 public abstract class Account {
     private AccountType accountType;
     private long id;
@@ -10,63 +14,6 @@ public abstract class Account {
     private long bankID;
     private double balance;
     private boolean withdrawAllowed;
-
-    public String getClientID() {
-        return clientID;
-    }
-
-    void setClientID(String clientID) {
-        this.clientID = clientID;
-    }
-
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(AccountType accountType) {
-        this.accountType = accountType;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    public boolean isWithdrawAllowed() {
-        return withdrawAllowed;
-    }
-
-    public void setWithdrawAllowed(boolean withdrawAllowed) {
-        this.withdrawAllowed = withdrawAllowed;
-    }
-
-    public void setBankID(long bankID) {
-        this.bankID = bankID;
-    }
-
-    public long getBankID() {
-        return bankID;
-    }
-
-    public Account(AccountType accountType, long bankID, long id, String clientID, double balance, boolean withdrawAllowed) {
-        this.accountType = accountType;
-        this.id = id;
-        this.bankID = bankID;
-        this.clientID = clientID;
-        this.balance = balance;
-        this.withdrawAllowed = withdrawAllowed;
-    }
 
     @Override
     public String toString() {

@@ -1,6 +1,7 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.dao;
 
 import kz.jusan.spring.bank.cli.jusanspringcli.transaction.Transaction;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;

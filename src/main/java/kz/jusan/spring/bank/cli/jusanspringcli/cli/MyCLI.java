@@ -2,23 +2,15 @@ package kz.jusan.spring.bank.cli.jusanspringcli.cli;
 
 import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 import kz.jusan.spring.bank.cli.jusanspringcli.cli.CLIUI;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.Scanner;
 
+@AllArgsConstructor
+@Data
 public class MyCLI implements CLIUI {
-    public Scanner getScanner() {
-        return scanner;
-    }
-
-    public void setScanner(Scanner scanner) {
-        this.scanner = scanner;
-    }
-
     private Scanner scanner;
-
-    public MyCLI(Scanner scanner) {
-        this.scanner = scanner;
-    }
 
     MyCLI() {
         this.scanner = new Scanner(System.in);

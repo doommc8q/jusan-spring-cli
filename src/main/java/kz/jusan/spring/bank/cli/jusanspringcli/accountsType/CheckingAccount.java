@@ -5,7 +5,7 @@ import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.AccountWithdraw;
 
 // Checking счетов можно снимать и пополнять
 public class CheckingAccount extends AccountWithdraw {
-    public CheckingAccount(AccountType accountType, long bankID, long id, String clientID, double balance, boolean withdrawAllowed) {
-        super(accountType, bankID, id, clientID, balance, withdrawAllowed);
+    public CheckingAccount(AccountType accountType, long id, String clientID, long bankID, double balance, boolean withdrawAllowed) {
+        super(accountType, id, clientID, bankID, balance, withdrawAllowed);
     }
 }

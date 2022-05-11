@@ -3,15 +3,12 @@ package kz.jusan.spring.bank.cli.jusanspringcli.account;
 import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 import kz.jusan.spring.bank.cli.jusanspringcli.dao.AccountDAO;
 import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.AccountWithdraw;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
-
+@AllArgsConstructor
 public class AccountListingServiceImpl implements AccountListingService {
     private final AccountDAO accountDAO;
-
-    public AccountListingServiceImpl(AccountDAO accountDAO) {
-        this.accountDAO = accountDAO;
-    }
 
     @Override
     public Account getClientAccounts(String clientID, String accountID) {
