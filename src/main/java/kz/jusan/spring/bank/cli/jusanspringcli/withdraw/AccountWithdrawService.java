@@ -1,5 +1,8 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.withdraw;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public interface AccountWithdrawService {
-    void deposit(double amount, AccountWithdraw account);
+    void withdraw(double amount, AccountWithdraw account);
 }

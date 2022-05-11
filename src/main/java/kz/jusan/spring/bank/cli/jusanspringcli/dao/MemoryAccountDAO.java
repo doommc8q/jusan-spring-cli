@@ -3,13 +3,18 @@ package kz.jusan.spring.bank.cli.jusanspringcli.dao;
 import kz.jusan.spring.bank.cli.jusanspringcli.account.Account;
 import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.AccountWithdraw;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //  нашем случае, все счета будут храниться в памяти - MemoryAccountDAO.
+@Repository
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MemoryAccountDAO implements AccountDAO {
-    private final List<Account> accountList = new ArrayList<>();
+    List<Account> accountList = new ArrayList<>();
 
     @Override
     public List<Account> getClientAccounts(String clientID) {
@@ -27,13 +32,8 @@ public class MemoryAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void updateAccount(Account account) {
-        if (account == null) {
-            System.out.println("Error while creating new account");
-            return;
-        }
-        this.accountList.add(account);
-        System.out.println("Account updated");
+    public void updateAccount(Account account, Account updatedAccount) {
+        accountList.set(accountList.indexOf(account), updatedAccount);
     }
 
     @Override
@@ -49,8 +49,15 @@ public class MemoryAccountDAO implements AccountDAO {
 
     @Override
     public AccountWithdraw getClientWithdrawAccount(String clientID, String accountID) {
-        System.out.println("Method not expected");
-        return null;
+
+        AccountWithdraw account = null;
+
+        for (Account a : accountList) {
+            if (String.valueOf(a.getId()).equals(accountID) && a.getClientID().equals(clientID)) {
+                account = (AccountWithdraw) a;
+            }
+        }
+        return account;
     }
 
     @Override

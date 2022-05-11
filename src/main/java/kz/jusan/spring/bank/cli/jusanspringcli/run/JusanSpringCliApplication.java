@@ -5,16 +5,23 @@ import kz.jusan.spring.bank.cli.jusanspringcli.cli.MyCLI;
 import kz.jusan.spring.bank.cli.jusanspringcli.context.ContextGetBeanClasses;
 import kz.jusan.spring.bank.cli.jusanspringcli.deposit.TransactionDepositCLI;
 import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.TransactionWithdrawCLI;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.ComponentScan;
 
+@ComponentScan(basePackages = "kz.jusan.spring.bank.cli.jusanspringcli")
+@SpringBootApplication
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class JusanSpringCliApplication implements CommandLineRunner {
-    private final static String clientID = "1";
+    final static String clientID = "1";
 
     @Autowired
-    private ApplicationContext context;
+    ApplicationContext context;
 
     public static void main(String[] args) {
         SpringApplication.run(JusanSpringCliApplication.class);
@@ -22,7 +29,7 @@ public class JusanSpringCliApplication implements CommandLineRunner {
 
     // Method which implemented from Class CommandLineRunner
     @Override
-    public void run(String... arg0){
+    public void run(String... arg0) {
         ContextGetBeanClasses classContext = new ContextGetBeanClasses(
                 context.getBean(MyCLI.class),
                 context.getBean(AccountBasicCLI.class),
@@ -59,19 +66,25 @@ public class JusanSpringCliApplication implements CommandLineRunner {
     public static void commandOperations(String commandNumber, AccountBasicCLI accountBasicCLI, TransactionDepositCLI transactionDepositCLI, TransactionWithdrawCLI transactionWithdrawCLI, String clientID) {
         switch (commandNumber) {
             case "1" -> accountBasicCLI.getAccounts(clientID);
-            case "2" -> accountBasicCLI.createAccountRequest(clientID);
+            case "2" -> {
+                System.out.println("""
+                        Choose account type
+                        [CHECKING, SAVING, FIXED]""");
+                accountBasicCLI.createAccountRequest(clientID);
+            }
             case "3" -> transactionDepositCLI.depositMoney(clientID);
             case "4" -> transactionWithdrawCLI.withdrawMoney(clientID);
+            case "5" -> System.out.println("transfer");
             case "6" -> printCommands();
             case "7" -> System.out.println("Application Closed");
-            default -> System.out.println("Command not recognized!");
+            default -> System.out.println("Not expected command");
         }
     }
 
     // Cycle method to call commandOperations
     public void commandCycle(ContextGetBeanClasses classContext, String clientID) {
         while (true) {
-            String input = classContext.getMyCLI().getScanner().nextLine();
+            String input = classContext.getMyCLI().getScanner().next();
             commandOperations(
                     input,
                     classContext.getAccountBasicCLI(),

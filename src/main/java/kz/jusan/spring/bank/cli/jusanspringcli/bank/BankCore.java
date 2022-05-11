@@ -2,15 +2,20 @@ package kz.jusan.spring.bank.cli.jusanspringcli.bank;
 
 import kz.jusan.spring.bank.cli.jusanspringcli.account.AccountCreationService;
 import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
+import lombok.AccessLevel;
+import lombok.Value;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
 
 // BankCore - это простой класс, который хранит статические значение для нашего банка.
 // Дополнительно, у него есть метод для создания счета, который вызывает AccountCreationService.
 // AccountID в банке увеличивается при создании новой карты.
-
+@Service
+@FieldDefaults(level= AccessLevel.PRIVATE)
 public class BankCore {
-    private static final long id = 1;
-    private long lastAccountNumber = 1;
-    private final AccountCreationService accountCreation;
+    static final long id = 1;
+    long lastAccountNumber = 1;
+    final AccountCreationService accountCreation;
 
     public BankCore(AccountCreationService accountCreation) {
         this.accountCreation = accountCreation;

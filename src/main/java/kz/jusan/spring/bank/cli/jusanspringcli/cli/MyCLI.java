@@ -1,27 +1,33 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.cli;
 
 import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
-import kz.jusan.spring.bank.cli.jusanspringcli.cli.CLIUI;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
 
-@AllArgsConstructor
+@Service
 @Data
-public class MyCLI implements CLIUI {
-    private Scanner scanner;
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class MyCLI extends CLIUI {
+    Scanner scanner;
 
     MyCLI() {
         this.scanner = new Scanner(System.in);
     }
 
     public double requestClientAmount() {
-        return 0.0;
+        return scanner.nextDouble();
     }
 
     public String requestClientAccountNumber() {
-        return "";
+        String id = scanner.next();
+        if (id.length() >=9){
+            return "";
+        }
+        return id.substring(id.indexOf("00000") + 5);
     }
 
     public AccountType requestAccountType() {
