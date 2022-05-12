@@ -22,7 +22,11 @@ public class MyCLI extends CLIUI {
 
     public double requestClientAmount() {
         System.out.println("Type Amount of money");
-        return scanner.nextDouble();
+        try {
+            return Double.parseDouble(scanner.next());
+        } catch(Exception e){
+            return 0;
+        }
     }
 
     public String requestClientAccountNumber() {

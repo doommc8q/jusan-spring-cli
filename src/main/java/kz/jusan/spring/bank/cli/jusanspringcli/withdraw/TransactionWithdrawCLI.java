@@ -25,7 +25,7 @@ public class TransactionWithdrawCLI {
         }
 
         double amount =  withdrawDepositOperationCLIUI.requestClientAmount();
-        if (amount < 0) {
+        if (amount <= 0) {
             System.out.println("Not excepted amount of money");
             return;
         }
