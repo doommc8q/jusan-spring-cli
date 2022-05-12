@@ -84,7 +84,7 @@ public class JusanSpringCliApplication implements CommandLineRunner {
     // Cycle method to call commandOperations
     public void commandCycle(ContextGetBeanClasses classContext, String clientID) {
         while (true) {
-            String input = classContext.getMyCLI().getScanner().next();
+            String input = classContext.getMyCLI().getScanner().nextLine();
             commandOperations(
                     input,
                     classContext.getAccountBasicCLI(),

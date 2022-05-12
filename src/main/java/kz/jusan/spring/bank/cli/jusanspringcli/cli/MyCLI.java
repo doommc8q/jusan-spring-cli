@@ -23,7 +23,7 @@ public class MyCLI extends CLIUI {
     public double requestClientAmount() {
         System.out.println("Type Amount of money");
         try {
-            return Double.parseDouble(scanner.next());
+            return Double.parseDouble(scanner.nextLine());
         } catch(Exception e){
             return 0;
         }
@@ -31,11 +31,11 @@ public class MyCLI extends CLIUI {
 
     public String requestClientAccountNumber() {
         System.out.println("Type account ID");
-        return scanner.next();
+        return scanner.nextLine();
     }
 
     public AccountType requestAccountType() {
-        String accountType = scanner.next();
+        String accountType = scanner.nextLine();
         if (!accountType.equals("CHECKING") && !accountType.equals("FIXED") && !accountType.equals("SAVING")) {
             System.out.println("Unexpected type");
             return null;
