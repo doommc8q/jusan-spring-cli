@@ -23,6 +23,6 @@ public class TransactionWithdraw {
 
         UUID uuid = UUID.randomUUID();
         transactionDAO.addTransaction(new Transaction(uuid.toString(), accountWithdraw.getClientID(),
-                accountWithdraw.getId(), dtf.format(localDateTime), amount, TransactionType.ADD_MONEY, true));
+                accountWithdraw.getId(), dtf.format(localDateTime), amount, TransactionType.WITHDRAW_MONEY, true));
     }
 }

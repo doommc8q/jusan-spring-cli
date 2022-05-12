@@ -3,6 +3,7 @@ package kz.jusan.spring.bank.cli.jusanspringcli.run;
 import kz.jusan.spring.bank.cli.jusanspringcli.cli.AccountBasicCLI;
 import kz.jusan.spring.bank.cli.jusanspringcli.cli.MyCLI;
 import kz.jusan.spring.bank.cli.jusanspringcli.context.ContextGetBeanClasses;
+import kz.jusan.spring.bank.cli.jusanspringcli.dao.TransactionDAO;
 import kz.jusan.spring.bank.cli.jusanspringcli.deposit.TransactionDepositCLI;
 import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.TransactionWithdrawCLI;
 import lombok.AccessLevel;
@@ -34,7 +35,8 @@ public class JusanSpringCliApplication implements CommandLineRunner {
                 context.getBean(MyCLI.class),
                 context.getBean(AccountBasicCLI.class),
                 context.getBean(TransactionDepositCLI.class),
-                context.getBean(TransactionWithdrawCLI.class)
+                context.getBean(TransactionWithdrawCLI.class),
+                context.getBean(TransactionDAO.class)
         );
 
         printCommands();
@@ -63,7 +65,14 @@ public class JusanSpringCliApplication implements CommandLineRunner {
     }
 
     // Method to print command operations
-    public static void commandOperations(String commandNumber, AccountBasicCLI accountBasicCLI, TransactionDepositCLI transactionDepositCLI, TransactionWithdrawCLI transactionWithdrawCLI, String clientID) {
+    public static void commandOperations(
+            String commandNumber,
+            AccountBasicCLI accountBasicCLI,
+            TransactionDepositCLI transactionDepositCLI,
+            TransactionWithdrawCLI transactionWithdrawCLI,
+            TransactionDAO transactionDAO,
+            String clientID
+    ) {
         switch (commandNumber) {
             case "1" -> accountBasicCLI.getAccounts(clientID);
             case "2" -> {
@@ -74,7 +83,7 @@ public class JusanSpringCliApplication implements CommandLineRunner {
             }
             case "3" -> transactionDepositCLI.depositMoney(clientID);
             case "4" -> transactionWithdrawCLI.withdrawMoney(clientID);
-            case "5" -> System.out.println("transfer");
+            case "5" -> transactionDAO.getTransaction().forEach(System.out::println);
             case "6" -> printCommands();
             case "7" -> System.out.println("Application Closed");
             default -> System.out.println("Not expected command");
@@ -90,6 +99,7 @@ public class JusanSpringCliApplication implements CommandLineRunner {
                     classContext.getAccountBasicCLI(),
                     classContext.getTransactionDepositCLI(),
                     classContext.getTransactionWithdrawCLI(),
+                    classContext.getTransactionDAO(),
                     clientID
             );
 
