@@ -12,15 +12,18 @@ public class TransactionWithdrawCLI {
     AccountListingService accountListing;
 
     public void withdrawMoney(String clientID) {
-        System.out.println("Type account ID");
         String id = withdrawDepositOperationCLIUI.requestClientAccountNumber();
         if (id.equals("")){
             System.out.println("Not excepted id");
             return;
         }
-        AccountWithdraw accountWithdraw = accountListing.getClientWithdrawAccount(clientID, id);
 
-        System.out.println("Type Amount of money");
+        AccountWithdraw accountWithdraw = accountListing.getClientWithdrawAccount(clientID, id);
+        if (accountWithdraw == null) {
+            System.out.println("Account can not use this method");
+            return;
+        }
+
         double amount =  withdrawDepositOperationCLIUI.requestClientAmount();
         if (amount < 0) {
             System.out.println("Not excepted amount of money");

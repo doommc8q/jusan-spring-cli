@@ -5,6 +5,7 @@ import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 import lombok.AccessLevel;
 import lombok.Value;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 // BankCore - это простой класс, который хранит статические значение для нашего банка.
@@ -17,7 +18,7 @@ public class BankCore {
     long lastAccountNumber = 1;
     final AccountCreationService accountCreation;
 
-    public BankCore(AccountCreationService accountCreation) {
+    public BankCore(@Qualifier("accountCreationServiceImpl") AccountCreationService accountCreation) {
         this.accountCreation = accountCreation;
     }
 

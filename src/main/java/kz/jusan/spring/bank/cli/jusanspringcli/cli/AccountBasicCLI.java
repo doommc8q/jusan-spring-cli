@@ -29,6 +29,10 @@ public class AccountBasicCLI {
 
     public void getAccounts(String clientID) {
         List<Account> accounts = accountListing.getClientAccounts(clientID);
-        System.out.println(accounts);
+        System.out.println("[");
+        for (Account a : accounts) {
+            System.out.println(a);
+        }
+        System.out.println("]");
     }
 }

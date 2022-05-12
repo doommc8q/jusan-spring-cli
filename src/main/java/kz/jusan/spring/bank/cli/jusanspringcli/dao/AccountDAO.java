@@ -14,7 +14,7 @@ public interface AccountDAO {
 
     void createNewAccount(Account account);
 
-    void updateAccount(Account account, Account updatedAccount);
+    void updateAccount(Account account, double amount);
 
     List<Account> getClientAccountsByType(String clientID, AccountType accountType);
 

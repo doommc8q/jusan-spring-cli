@@ -32,8 +32,8 @@ public class MemoryAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void updateAccount(Account account, Account updatedAccount) {
-        accountList.set(accountList.indexOf(account), updatedAccount);
+    public void updateAccount(Account account, double amount) {
+        accountList.get(accountList.indexOf(account)).setBalance(account.getBalance() + amount);
     }
 
     @Override
@@ -49,11 +49,11 @@ public class MemoryAccountDAO implements AccountDAO {
 
     @Override
     public AccountWithdraw getClientWithdrawAccount(String clientID, String accountID) {
-
         AccountWithdraw account = null;
 
         for (Account a : accountList) {
-            if (String.valueOf(a.getId()).equals(accountID) && a.getClientID().equals(clientID)) {
+            String accountNumber = String.format("%03d%06d", a.getBankID(), a.getId());
+            if (accountNumber.equals(accountID) && a.getClientID().equals(clientID) && a.isWithdrawAllowed()) {
                 account = (AccountWithdraw) a;
             }
         }
@@ -64,8 +64,10 @@ public class MemoryAccountDAO implements AccountDAO {
     public Account getClientAccount(String clientID, String accountID) {
         Account account = null;
         for (Account a : accountList) {
-            if (a.getClientID().equals(clientID) && accountID.equals(a.getClientID()))
+            String accountNumber = String.format("%03d%06d", a.getBankID(), a.getId());
+            if (accountNumber.equals(accountID) && a.getClientID().equals(clientID)) {
                 account = a;
+            }
         }
         return account;
     }

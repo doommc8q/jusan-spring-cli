@@ -12,6 +12,5 @@ public class TransactionWithdraw {
 
     void execute(AccountWithdraw accountWithdraw, double amount) {
         accountWithdrawService.withdraw(amount, accountWithdraw);
-
     }
 }

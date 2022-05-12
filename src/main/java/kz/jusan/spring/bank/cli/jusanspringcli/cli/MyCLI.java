@@ -3,11 +3,13 @@ package kz.jusan.spring.bank.cli.jusanspringcli.cli;
 import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
 
+@EqualsAndHashCode(callSuper = true)
 @Service
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -19,15 +21,13 @@ public class MyCLI extends CLIUI {
     }
 
     public double requestClientAmount() {
+        System.out.println("Type Amount of money");
         return scanner.nextDouble();
     }
 
     public String requestClientAccountNumber() {
-        String id = scanner.next();
-        if (id.length() >=9){
-            return "";
-        }
-        return id.substring(id.indexOf("00000") + 5);
+        System.out.println("Type account ID");
+        return scanner.next();
     }
 
     public AccountType requestAccountType() {
