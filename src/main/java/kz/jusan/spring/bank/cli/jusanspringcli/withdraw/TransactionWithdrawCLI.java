@@ -1,5 +1,6 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.withdraw;
 
+import kz.jusan.spring.bank.cli.jusanspringcli.account.Account;
 import kz.jusan.spring.bank.cli.jusanspringcli.account.AccountListingService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,8 +13,8 @@ public class TransactionWithdrawCLI {
     AccountListingService accountListing;
 
     public void withdrawMoney(String clientID) {
-        String id = withdrawDepositOperationCLIUI.requestClientAccountNumber();
-        if (id.equals("")){
+        Long id = withdrawDepositOperationCLIUI.requestClientAccountNumber();
+        if (id == 0L) {
             System.out.println("Not excepted id");
             return;
         }
@@ -24,7 +25,7 @@ public class TransactionWithdrawCLI {
             return;
         }
 
-        double amount =  withdrawDepositOperationCLIUI.requestClientAmount();
+        double amount = withdrawDepositOperationCLIUI.requestClientAmount();
         if (amount <= 0) {
             System.out.println("Not excepted amount of money");
             return;

@@ -8,6 +8,7 @@ import kz.jusan.spring.bank.cli.jusanspringcli.dao.AccountDAO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,15 +18,21 @@ public class AccountCreationServiceImpl implements AccountCreationService {
     final AccountDAO accountDAO;
 
     @Override
-    public void create(AccountType accountType, long bankID, String clientID, long accountID) {
+    public void create(AccountType accountType, Long bankID, String clientID, Long accountID) {
         Account account = null;
         if (accountType.equals(AccountType.SAVING)) {
-            account = new SavingAccount(accountType, accountID, clientID, bankID, 0.0, true);
+            account = new SavingAccount(accountID, accountType, clientID, bankID, 0.0, true);
         } else if (accountType.equals(AccountType.FIXED)) {
-            account = new FixedAccount(accountType, accountID, clientID, bankID, 0.0, false);
+            account = new FixedAccount(accountID, accountType, clientID, bankID, 0.0, false);
         } else if (accountType.equals(AccountType.CHECKING)) {
-            account = new CheckingAccount(accountType, accountID, clientID, bankID, 0.0, true);
+            account = new CheckingAccount(accountID, accountType, clientID, bankID, 0.0, true);
         }
-        accountDAO.createNewAccount(account);
+        if (account == null) {
+            System.out.println("Error while creating new account");
+        }  else {
+            Long id = Long.parseLong(String.format("%03d%06d",account.getBankId() ,account.getId()));
+            accountDAO.createAccount(id,account.getAccountType().toString(),account.getClientId(),account.getBankId(),account.getBalance(),account.isWithdrawAllowed());
+            System.out.println("Bank account created");
+        }
     }
 }

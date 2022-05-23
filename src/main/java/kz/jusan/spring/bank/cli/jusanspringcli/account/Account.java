@@ -3,23 +3,27 @@ package kz.jusan.spring.bank.cli.jusanspringcli.account;
 import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.Id;
 
 // В данном проекте основным доменом является счет Account
 @Data
+@Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public abstract class Account {
+public class Account {
+    @Id
+    Long id;
     AccountType accountType;
-    long id;
-    String clientID;
-    long bankID;
+    String clientId;
+    Long bankId;
     double balance;
     boolean withdrawAllowed;
 
     @Override
     public String toString() {
-        return String.format("Account{accountType='%s', id='%03d%06d', clientID='%s', balance=%.1f, withdrawAllowed=%s}", accountType, bankID, id, clientID, balance, withdrawAllowed);
+        return String.format("Account{accountType='%s', id='00%d', clientId='%s', balance=%.1f, withdrawAllowed=%s}", accountType, id, clientId, balance, withdrawAllowed);
     }
 }

@@ -1,5 +1,6 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.withdraw;
 
+import kz.jusan.spring.bank.cli.jusanspringcli.account.Account;
 import kz.jusan.spring.bank.cli.jusanspringcli.dao.TransactionDAO;
 import kz.jusan.spring.bank.cli.jusanspringcli.transaction.Transaction;
 import kz.jusan.spring.bank.cli.jusanspringcli.transaction.TransactionType;
@@ -22,7 +23,16 @@ public class TransactionWithdraw {
         LocalDateTime localDateTime = LocalDateTime.now();
 
         UUID uuid = UUID.randomUUID();
-        transactionDAO.addTransaction(new Transaction(uuid.toString(), accountWithdraw.getClientID(),
-                accountWithdraw.getId(), dtf.format(localDateTime), amount, TransactionType.WITHDRAW_MONEY, true));
+        Transaction transaction = new Transaction(uuid.toString(), accountWithdraw.getClientId(), accountWithdraw.getId(),
+                dtf.format(localDateTime), amount, TransactionType.WITHDRAW_MONEY, true);
+        transactionDAO.createTransaction(
+                transaction.getTransactionId(),
+                transaction.getClientId(),
+                transaction.getAccountId(),
+                transaction.getTransactionData(),
+                transaction.getAmount(),
+                transaction.getTransactionType().toString(),
+                transaction.isCompleted()
+        );
     }
 }

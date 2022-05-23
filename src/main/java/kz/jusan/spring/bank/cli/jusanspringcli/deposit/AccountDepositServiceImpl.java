@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class AccountDepositServiceImpl implements AccountDepositService {
-    AccountDAO accountDAO;
+    final AccountDAO accountDAO;
 
     @Override
     public void deposit(double amount, Account account) {
-        accountDAO.updateAccount(account, amount);
-        System.out.printf("%.2f$ transferred to %03d%06d account\n", amount, account.getBankID(), account.getId());
+        accountDAO.update(account.getId(), account.getBalance() + amount);
+        System.out.printf("%.2f$ transferred to 00%d account\n", amount, account.getId());
     }
 }

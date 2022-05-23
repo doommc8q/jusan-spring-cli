@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AccountCreationService {
-    void create(AccountType accountType, long bankID, String clientID, long accountID);
+    void create(AccountType accountType, Long bankID, String clientID, Long accountID);
 }

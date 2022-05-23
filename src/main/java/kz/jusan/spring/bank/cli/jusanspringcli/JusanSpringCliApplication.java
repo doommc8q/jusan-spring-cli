@@ -1,4 +1,4 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.run;
+package kz.jusan.spring.bank.cli.jusanspringcli;
 
 import kz.jusan.spring.bank.cli.jusanspringcli.cli.AccountBasicCLI;
 import kz.jusan.spring.bank.cli.jusanspringcli.cli.MyCLI;
@@ -13,9 +13,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan(basePackages = "kz.jusan.spring.bank.cli.jusanspringcli")
+// исправить айдишки должна приходить 001000001
+// испраить транзакцию если не изменился то completed=false
+// проверить сервис на другие баги
+// разбить нормально по папкам
 @SpringBootApplication
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JusanSpringCliApplication implements CommandLineRunner {
@@ -83,7 +85,7 @@ public class JusanSpringCliApplication implements CommandLineRunner {
             }
             case "3" -> transactionDepositCLI.depositMoney(clientID);
             case "4" -> transactionWithdrawCLI.withdrawMoney(clientID);
-            case "5" -> transactionDAO.getTransaction().forEach(System.out::println);
+            case "5" -> transactionDAO.findAll().forEach(System.out::println);
             case "6" -> printCommands();
             case "7" -> System.out.println("Application Closed");
             default -> System.out.println("Not expected command");

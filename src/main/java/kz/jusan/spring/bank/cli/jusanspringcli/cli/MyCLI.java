@@ -5,16 +5,15 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
 
-@EqualsAndHashCode(callSuper = true)
-@Service
+@Component
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class MyCLI extends CLIUI {
-    Scanner scanner;
+public class MyCLI implements CLIUI {
+    private Scanner scanner;
 
     MyCLI() {
         this.scanner = new Scanner(System.in);
@@ -24,14 +23,20 @@ public class MyCLI extends CLIUI {
         System.out.println("Type Amount of money");
         try {
             return Double.parseDouble(scanner.nextLine());
-        } catch(Exception e){
+        } catch (Exception e) {
             return 0;
         }
     }
 
-    public String requestClientAccountNumber() {
+    public Long requestClientAccountNumber() {
         System.out.println("Type account ID");
-        return scanner.nextLine();
+        long id;
+        try {
+            id = Long.parseLong(scanner.nextLine());
+        } catch (Exception e) {
+            return 0L;
+        }
+        return id;
     }
 
     public AccountType requestAccountType() {

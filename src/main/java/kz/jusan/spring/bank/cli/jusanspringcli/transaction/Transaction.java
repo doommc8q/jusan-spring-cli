@@ -2,19 +2,19 @@ package kz.jusan.spring.bank.cli.jusanspringcli.transaction;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @Data
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Transaction {
-    String id;
+    String TransactionId;
     String clientId;
-    long accountId;
-    String data;
+    Long accountId;
+    String transactionData;
     double amount;
     TransactionType transactionType;
     boolean completed;
@@ -22,10 +22,10 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-                "id='" + id + '\'' +
+                "id='" + TransactionId + '\'' +
                 ", clientId='" + clientId + '\'' +
                 ", accountId='" + accountId + '\'' +
-                ", data=" + data +
+                ", transactionData=" + transactionData +
                 ", amount=" + amount +
                 ", transactionType=" + transactionType +
                 ", completed=" + completed +

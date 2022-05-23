@@ -3,22 +3,30 @@ package kz.jusan.spring.bank.cli.jusanspringcli.dao;
 import kz.jusan.spring.bank.cli.jusanspringcli.account.Account;
 import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.AccountWithdraw;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 // AccountDAO - это интерфейс, который описывает операции с базой данных
 @Repository
-public interface AccountDAO {
-    List<Account> getClientAccounts(String clientID);
+public interface AccountDAO extends CrudRepository<Account, Long> {
+    List<Account> findAllByClientId(String clientId);
 
-    void createNewAccount(Account account);
+    @Modifying
+    @Query("insert into Account values (:id, :accountType, :clientId, :bankId, :balance, :withdrawAllowed)")
+    void createAccount(Long id, String accountType, String clientId, Long bankId, double balance, boolean withdrawAllowed);
 
-    void updateAccount(Account account, double amount);
+    @Modifying
+    @Query("update Account u set u.balance = :amount where u.id = :id")
+    void update(Long id, double amount);
 
-    List<Account> getClientAccountsByType(String clientID, AccountType accountType);
+    List<Account> findAllByClientIdAndAccountType(String clientId, AccountType accountType);
 
-    AccountWithdraw getClientWithdrawAccount(String clientID, String accountID);
+    @Query("SELECT * FROM Account u WHERE u.client_id = :clientId AND u.id = :accountId AND u.withdraw_allowed = true")
+    Account findAccountByWithdrawAccount(String clientId, Long accountId);
 
-    Account getClientAccount(String clientID, String accountID);
+    Account findAccountByClientIdAndId(String clientId, Long id);
 }

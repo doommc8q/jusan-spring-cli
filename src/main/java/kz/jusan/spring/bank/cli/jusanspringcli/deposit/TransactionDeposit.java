@@ -24,8 +24,17 @@ public class TransactionDeposit {
         LocalDateTime localDateTime = LocalDateTime.now();
 
         UUID uuid = UUID.randomUUID();
-        transactionDAO.addTransaction(new Transaction(uuid.toString(), account.getClientID(), account.getId(),
-                dtf.format(localDateTime), amount, TransactionType.ADD_MONEY, true));
+        Transaction transaction = new Transaction(uuid.toString(), account.getClientId(), account.getId(),
+                dtf.format(localDateTime), amount, TransactionType.ADD_MONEY, true);
+        transactionDAO.createTransaction(
+                transaction.getTransactionId(),
+                transaction.getClientId(),
+                transaction.getAccountId(),
+                transaction.getTransactionData(),
+                transaction.getAmount(),
+                transaction.getTransactionType().toString(),
+                transaction.isCompleted()
+        );
     }
 
 }

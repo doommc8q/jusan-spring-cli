@@ -5,7 +5,7 @@ import kz.jusan.spring.bank.cli.jusanspringcli.deposit.AccountDeposit;
 
 // Fixed счета нельзя снимать деньги
 public class FixedAccount extends AccountDeposit {
-    public FixedAccount(AccountType accountType, long id, String clientID, long bankID, double balance, boolean withdrawAllowed) {
-        super(accountType, id, clientID, bankID, balance, withdrawAllowed);
+    public FixedAccount(Long id, AccountType accountType, String clientID, Long bankID, double balance, boolean withdrawAllowed) {
+        super(id, accountType, clientID, bankID, balance, withdrawAllowed);
     }
 }

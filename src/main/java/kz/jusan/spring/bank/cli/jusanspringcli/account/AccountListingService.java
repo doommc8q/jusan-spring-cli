@@ -10,9 +10,9 @@ import java.util.List;
 // AccountListingService отдельный бизнес процесс. имеет интерфейс для изменения данных AccountDAO
 @Service
 public interface AccountListingService {
-    Account getClientAccounts(String clientID, String accountID);
+    Account getClientAccounts(String clientID, Long accountID);
 
-    AccountWithdraw getClientWithdrawAccount(String clientID, String accountID);
+    AccountWithdraw getClientWithdrawAccount(String clientID, Long accountID);
 
     List<Account> getClientAccounts(String clientID);
 
