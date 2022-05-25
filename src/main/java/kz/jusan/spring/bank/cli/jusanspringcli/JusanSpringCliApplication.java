@@ -23,7 +23,7 @@ public class JusanSpringCliApplication implements CommandLineRunner {
     ApplicationContext context;
 
     public static void main(String[] args) {
-        SpringApplication.run(JusanSpringCliApplication.class);
+        SpringApplication.run(JusanSpringCliApplication.class).close();
     }
 
     // Method which implemented from Class CommandLineRunner

@@ -29,6 +29,9 @@ public class AccountListingServiceImpl implements AccountListingService {
     @Override
     public AccountWithdraw getClientWithdrawAccount(String clientID, String accountID) {
         Account account = accountDAO.findAccountByWithdrawAccount(clientID, accountID);
+        if (account == null) {
+            return null;
+        }
         return new AccountWithdraw(account.getId(), account.getAccountType(), account.getClientId(), account.getBankId(), account.getBalance(), account.isWithdrawAllowed());
     }
 
