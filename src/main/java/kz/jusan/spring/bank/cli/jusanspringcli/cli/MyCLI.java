@@ -28,15 +28,9 @@ public class MyCLI implements CLIUI {
         }
     }
 
-    public Long requestClientAccountNumber() {
+    public String requestClientAccountNumber() {
         System.out.println("Type account ID");
-        long id;
-        try {
-            id = Long.parseLong(scanner.nextLine());
-        } catch (Exception e) {
-            return 0L;
-        }
-        return id;
+        return scanner.nextLine();
     }
 
     public AccountType requestAccountType() {

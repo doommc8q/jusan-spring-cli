@@ -15,7 +15,7 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
     public void withdraw(double amount, AccountWithdraw account) {
         if (account.getBalance() >= amount) {
             accountDAO.update(account.getId(), account.getBalance() - amount);
-            System.out.printf("%.2f$ transferred from 00%d account\n", amount,  account.getId());
+            System.out.printf("%.2f$ transferred from %s account\n", amount,  account.getId());
         } else {
             System.out.println("Not enough money to withdraw");
         }

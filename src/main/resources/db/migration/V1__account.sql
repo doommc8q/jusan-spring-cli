@@ -1,5 +1,5 @@
 create TABLE Account(
-    id INTEGER  NOT NULL,
+    id NVARCHAR(80)  NOT NULL,
     account_type NVARCHAR(80)  NOT NULL,
     client_id NVARCHAR(80)  NOT NULL,
     bank_id INTEGER  NOT NULL,

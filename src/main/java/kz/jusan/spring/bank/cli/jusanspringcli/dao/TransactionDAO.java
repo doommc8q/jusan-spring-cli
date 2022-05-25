@@ -11,8 +11,9 @@ import java.util.List;
 @Repository
 public interface TransactionDAO extends CrudRepository<Transaction, String> {
     List<Transaction> findAll();
+
     @Modifying
     @Query("insert into Transaction values (:transactionId, :clientId, :accountId, :transactionData, :amount, :transactionType, :completed)")
-    void createTransaction(String transactionId, String clientId, Long accountId, String transactionData, double amount,
+    void createTransaction(String transactionId, String clientId, String accountId, String transactionData, double amount,
                            String transactionType, boolean completed);
 }

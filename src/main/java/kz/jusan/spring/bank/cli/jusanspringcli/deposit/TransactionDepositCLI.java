@@ -14,8 +14,8 @@ public class TransactionDepositCLI {
     AccountListingService accountListing;
 
     public void depositMoney(String clientID) {
-        Long id = withdrawDepositOperationCLIUI.requestClientAccountNumber();
-        if (id == 0L) {
+        String id = withdrawDepositOperationCLIUI.requestClientAccountNumber();
+        if (id.equals("")) {
             System.out.println("Not excepted id");
             return;
         }

@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.boot.CommandLineRunner;
 
-// исправить айдишки должна приходить 001000001
 // испраить транзакцию если не изменился то completed=false
 // проверить сервис на другие баги
 // разбить нормально по папкам

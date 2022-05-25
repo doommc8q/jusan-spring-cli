@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component;
 public interface WithdrawDepositOperationCLIUI {
     double requestClientAmount();
 
-    Long requestClientAccountNumber();
+    String requestClientAccountNumber();
 }

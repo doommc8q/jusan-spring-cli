@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 public class Transaction {
     String TransactionId;
     String clientId;
-    Long accountId;
+    String accountId;
     String transactionData;
     double amount;
     TransactionType transactionType;

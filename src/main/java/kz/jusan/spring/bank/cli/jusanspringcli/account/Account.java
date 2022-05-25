@@ -15,7 +15,7 @@ import org.springframework.data.annotation.Id;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Account {
     @Id
-    Long id;
+    String id;
     AccountType accountType;
     String clientId;
     Long bankId;
@@ -24,6 +24,6 @@ public class Account {
 
     @Override
     public String toString() {
-        return String.format("Account{accountType='%s', id='00%d', clientId='%s', balance=%.1f, withdrawAllowed=%s}", accountType, id, clientId, balance, withdrawAllowed);
+        return String.format("Account{accountType='%s', id='%s', clientId='%s', balance=%.1f, withdrawAllowed=%s}", accountType, id, clientId, balance, withdrawAllowed);
     }
 }

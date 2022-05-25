@@ -13,8 +13,8 @@ public class TransactionWithdrawCLI {
     AccountListingService accountListing;
 
     public void withdrawMoney(String clientID) {
-        Long id = withdrawDepositOperationCLIUI.requestClientAccountNumber();
-        if (id == 0L) {
+        String id = withdrawDepositOperationCLIUI.requestClientAccountNumber();
+        if (id.equals("")) {
             System.out.println("Not excepted id");
             return;
         }

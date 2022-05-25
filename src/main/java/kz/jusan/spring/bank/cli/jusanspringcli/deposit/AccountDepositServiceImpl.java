@@ -13,6 +13,6 @@ public class AccountDepositServiceImpl implements AccountDepositService {
     @Override
     public void deposit(double amount, Account account) {
         accountDAO.update(account.getId(), account.getBalance() + amount);
-        System.out.printf("%.2f$ transferred to 00%d account\n", amount, account.getId());
+        System.out.printf("%.2f$ transferred to %s account\n", amount, account.getId());
     }
 }

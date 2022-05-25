@@ -5,7 +5,7 @@ import kz.jusan.spring.bank.cli.jusanspringcli.accountsType.AccountType;
 
 // AccountDeposit можно только снимать
 public class AccountDeposit extends Account {
-    public AccountDeposit(Long id, AccountType accountType, String clientID, Long bankID, double balance, boolean withdrawAllowed) {
+    public AccountDeposit(String id, AccountType accountType, String clientID, Long bankID, double balance, boolean withdrawAllowed) {
         super(id, accountType, clientID, bankID, balance, withdrawAllowed);
     }
 }
