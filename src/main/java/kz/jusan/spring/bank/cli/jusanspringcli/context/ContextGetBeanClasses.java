@@ -1,10 +1,10 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.context;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.cli.AccountBasicCLI;
-import kz.jusan.spring.bank.cli.jusanspringcli.cli.MyCLI;
-import kz.jusan.spring.bank.cli.jusanspringcli.dao.TransactionDAO;
-import kz.jusan.spring.bank.cli.jusanspringcli.deposit.TransactionDepositCLI;
-import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.TransactionWithdrawCLI;
+import kz.jusan.spring.bank.cli.jusanspringcli.controller.cli.AccountBasicCLI;
+import kz.jusan.spring.bank.cli.jusanspringcli.controller.cli.MyCLI;
+import kz.jusan.spring.bank.cli.jusanspringcli.repository.TransactionDAO;
+import kz.jusan.spring.bank.cli.jusanspringcli.controller.cli.TransactionDepositCLI;
+import kz.jusan.spring.bank.cli.jusanspringcli.controller.cli.TransactionWithdrawCLI;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

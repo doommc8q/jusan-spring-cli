@@ -1,11 +1,11 @@
 package kz.jusan.spring.bank.cli.jusanspringcli;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.cli.AccountBasicCLI;
-import kz.jusan.spring.bank.cli.jusanspringcli.cli.MyCLI;
+import kz.jusan.spring.bank.cli.jusanspringcli.controller.cli.AccountBasicCLI;
+import kz.jusan.spring.bank.cli.jusanspringcli.controller.cli.MyCLI;
 import kz.jusan.spring.bank.cli.jusanspringcli.context.ContextGetBeanClasses;
-import kz.jusan.spring.bank.cli.jusanspringcli.dao.TransactionDAO;
-import kz.jusan.spring.bank.cli.jusanspringcli.deposit.TransactionDepositCLI;
-import kz.jusan.spring.bank.cli.jusanspringcli.withdraw.TransactionWithdrawCLI;
+import kz.jusan.spring.bank.cli.jusanspringcli.repository.TransactionDAO;
+import kz.jusan.spring.bank.cli.jusanspringcli.controller.cli.TransactionDepositCLI;
+import kz.jusan.spring.bank.cli.jusanspringcli.controller.cli.TransactionWithdrawCLI;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.boot.CommandLineRunner;
 
-// испраить транзакцию если не изменился то completed=false
-// проверить сервис на другие баги
-// разбить нормально по папкам
 @SpringBootApplication
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JusanSpringCliApplication implements CommandLineRunner {
@@ -76,12 +73,7 @@ public class JusanSpringCliApplication implements CommandLineRunner {
     ) {
         switch (commandNumber) {
             case "1" -> accountBasicCLI.getAccounts(clientID);
-            case "2" -> {
-                System.out.println("""
-                        Choose account type
-                        [CHECKING, SAVING, FIXED]""");
-                accountBasicCLI.createAccountRequest(clientID);
-            }
+            case "2" -> accountBasicCLI.createAccountRequest(clientID);
             case "3" -> transactionDepositCLI.depositMoney(clientID);
             case "4" -> transactionWithdrawCLI.withdrawMoney(clientID);
             case "5" -> transactionDAO.findAll().forEach(System.out::println);

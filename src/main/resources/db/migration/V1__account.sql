@@ -1,4 +1,4 @@
-create TABLE Account(
+CREATE TABLE Account(
     id NVARCHAR(80)  NOT NULL,
     account_type NVARCHAR(80)  NOT NULL,
     client_id NVARCHAR(80)  NOT NULL,
