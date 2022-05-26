@@ -1,35 +1,24 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.entity;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.entity.entityTypes.transactionType.TransactionType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.Id;
 
 @AllArgsConstructor
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Transaction {
-    String TransactionId;
+    @Id
+    Long transactionId;
     String clientId;
-    String accountId;
+    Long accountId;
+    Long bankId;
     String transactionData;
     double amount;
-    TransactionType transactionType;
+    Long transactionTypeId;
     boolean completed;
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "id='" + TransactionId + '\'' +
-                ", clientId='" + clientId + '\'' +
-                ", accountId='" + accountId + '\'' +
-                ", transactionData=" + transactionData +
-                ", amount=" + amount +
-                ", transactionType=" + transactionType +
-                ", completed=" + completed +
-                '}';
-    }
 }
