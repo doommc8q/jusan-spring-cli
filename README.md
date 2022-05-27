@@ -20,7 +20,7 @@
 
 #### Swagger is an open source set of rules, specifications and tools for developing and describing RESTful APIs. The Swagger framework allows developers to create interactive, machine and human-readable API documentation.
 
-#####Bank app API: 
+##### Bank app API: 
 
 ![API](image/img.png?raw=true "Title")
 
