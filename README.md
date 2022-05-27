@@ -4,32 +4,25 @@
 
 ### Running:
 
-    To run download jusan-spring-cli.jar and paste command: 
+    1) Running by jar download jusan-spring-cli.jar and paste command: 
 
 `java -jar jusan-spring-cli.jar`
+    
+    2) Running by war download jusan-spring-cli.war and paste commands:
+    
+    jar -xvf MyWar.war
+    cd WEB-INF
+    java -classpath "lib/*:classes/." kz.jusan.spring.bank.cli.jusanspringcli.JusanSpringCliApplication
 
 <hr>
 
-### Welcome to CLI bank service.
+### Swagger
 
-                Operations:
-                1 - show accounts
-                2 - create account
-                3 - deposit
-                4 - withdraw
-                5 - transfer
-                6 - this message
-                7 - exit
+#### Swagger is an open source set of rules, specifications and tools for developing and describing RESTful APIs. The Swagger framework allows developers to create interactive, machine and human-readable API documentation.
 
-![cli-running](https://ucarecdn.com/b25038ef-e370-46f7-aacb-3357cffa4138/)
+#####Bank app API: 
 
-<hr>
-
-### UML diagram
-
-#### The Unified Modeling Language (UML) is a general-purpose, developmental, modeling language in the field of software engineering that is intended to provide a standard way to visualize the design of a system.
-
-![uml-diagram](https://ucarecdn.com/9c83ab15-eac1-4e21-85a2-ca2770fc2d90/)
+![API](image/img.png?raw=true "Title")
 
 <hr>
 
