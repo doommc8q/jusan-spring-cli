@@ -138,11 +138,15 @@ public class AccountService {
         return new OutputBody(ConstantMessages.ACCOUNT_UPDATED, timestamp, Status.OK, accountRepository.save(accountBuilder));
     }
 
+    @Transactional
     public OutputBody deleteAccount(Long accountId, String timestamp) {
         if (accountRepository.findById(accountId).isEmpty()) {
             return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
-
+        Iterable<Transaction> iterable = transactionRepository.findAllByAccountId(accountId);
+        if (Streamable.of(iterable).toList().size() > 0) {
+            transactionRepository.deleteByAccountId(accountId);
+        }
         accountRepository.deleteById(accountId);
         return new OutputBody(ConstantMessages.ACCOUNT_DELETED, timestamp, Status.OK, null);
     }
