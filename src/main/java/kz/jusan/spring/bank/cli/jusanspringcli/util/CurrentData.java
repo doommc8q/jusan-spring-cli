@@ -1,4 +1,4 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.request.util;
+package kz.jusan.spring.bank.cli.jusanspringcli.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

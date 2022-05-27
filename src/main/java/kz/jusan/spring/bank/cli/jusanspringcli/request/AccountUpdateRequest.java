@@ -8,4 +8,7 @@ import lombok.Data;
 public class AccountUpdateRequest {
     String clientId;
     Long bankId;
+
+    public AccountUpdateRequest() {
+    }
 }

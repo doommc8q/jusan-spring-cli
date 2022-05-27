@@ -9,4 +9,7 @@ public class AccountRequest {
     String clientId;
     Long bankId;
     String accountType;
+
+    public AccountRequest() {
+    }
 }
