@@ -142,7 +142,10 @@ public class AccountService {
         if (accountRepository.findById(accountId).isEmpty()) {
             return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
-
+        Iterable<Transaction> iterable = transactionRepository.findAllByAccountId(accountId);
+        if (Streamable.of(iterable).toList().size() > 0) {
+            transactionRepository.deleteByAccountId(accountId);
+        }
         accountRepository.deleteById(accountId);
         return new OutputBody(ConstantMessages.ACCOUNT_DELETED, timestamp, Status.OK, null);
     }
