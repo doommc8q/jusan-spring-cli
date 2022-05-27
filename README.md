@@ -22,7 +22,7 @@
 
 ##### Bank app API: 
 
-![API](image/img.png?raw=true "Title")
+![API for bank](image/img.png?raw=true "Title")
 
 <hr>
 
