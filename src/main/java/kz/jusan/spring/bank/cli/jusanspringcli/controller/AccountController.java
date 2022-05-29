@@ -4,6 +4,7 @@ import kz.jusan.spring.bank.cli.jusanspringcli.output.OutputBody;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountTransactionBalance;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountUpdateRequest;
+import kz.jusan.spring.bank.cli.jusanspringcli.request.TransferRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.util.CurrentData;
 import kz.jusan.spring.bank.cli.jusanspringcli.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,10 @@ public class AccountController {
     @PostMapping("/{accountId}/withdraw")
     public OutputBody accountWithdrawTransaction(@RequestBody AccountTransactionBalance accountTransactionBalance, @PathVariable Long accountId) {
         return accountService.withdrawTransaction(accountTransactionBalance, accountId, currentData.timestamp());
+    }
+
+    @PostMapping("/{accountId}/transfer")
+    public OutputBody transferMoneyBetweenAccounts(@RequestBody TransferRequest transferRequest, @PathVariable Long accountId) {
+        return accountService.transferMoneyBetweenAccounts(transferRequest, accountId, currentData.timestamp());
     }
 }

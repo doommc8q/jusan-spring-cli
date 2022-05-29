@@ -1,0 +1,5 @@
+CREATE TABLE Users(
+    id IDENTITY NOT NULL PRIMARY KEY,
+    username  NVARCHAR(80) NOT NULL,
+    password  NVARCHAR(80) NOT NULL
+);

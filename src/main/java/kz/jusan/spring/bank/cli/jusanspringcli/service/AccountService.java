@@ -8,6 +8,7 @@ import kz.jusan.spring.bank.cli.jusanspringcli.repository.TransactionRepository;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountTransactionBalance;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountUpdateRequest;
+import kz.jusan.spring.bank.cli.jusanspringcli.request.TransferRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.util.ConstantMessages;
 import lombok.AllArgsConstructor;
 import org.springframework.data.util.Streamable;
@@ -224,5 +225,76 @@ public class AccountService {
         transactionRepository.save(transactionBuilder);
 
         return new OutputBody(ConstantMessages.ACCOUNT_BALANCE_CHANGED, timestamp, Status.OK, withdrawTransaction);
+    }
+
+    // на фиксед можно  переводить а наорот нельзя
+    @Transactional
+    public OutputBody transferMoneyBetweenAccounts(TransferRequest transferRequest, Long accountId, String timestamp) {
+        Optional<Account> account = accountRepository.findById(accountId);
+        Optional<Account> destinationAccount = accountRepository.findById(transferRequest.getDestinationAccountId());
+
+        if (account.isEmpty() || destinationAccount.isEmpty()) {
+            return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
+        }
+
+        if (accountId.equals(transferRequest.getDestinationAccountId())) {
+            return new OutputBody(ConstantMessages.ACCOUNT_CON_NOT_SEND_TO_HIMSELF, timestamp, Status.BAD_REQUEST, null);
+        }
+
+        if (account.get().getAccountTypeId() == 3L) {
+            return new OutputBody(ConstantMessages.ACCOUNT_NOT_WITHDRAWN, timestamp, Status.METHOD_NOT_ALLOWED, null);
+        }
+
+        if (transferRequest.getAmount() < 0) {
+            return new OutputBody(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
+        }
+
+        if (transferRequest.getAmount() > account.get().getBalance()) {
+            return new OutputBody(ConstantMessages.ACCOUNT_NOT_ENOUGH_MONEY, timestamp, Status.METHOD_NOT_ALLOWED, null);
+        }
+
+        Account accountBuilder1 = Account.builder().
+                accountId(accountId).
+                fullAccountId(account.get().getFullAccountId()).
+                accountTypeId(account.get().getAccountTypeId()).
+                clientId(account.get().getClientId()).
+                bankId(account.get().getBankId()).
+                balance(account.get().getBalance() - transferRequest.getAmount()).
+                build();
+        accountRepository.save(accountBuilder1);
+
+        Transaction transactionBuilder1 = Transaction.builder().
+                clientId(account.get().getClientId()).
+                bankId(account.get().getBankId()).
+                amount(transferRequest.getAmount()).
+                accountId(accountId).
+                transactionData(timestamp).
+                completed(true).
+                transactionTypeId(2L).
+                build();
+        transactionRepository.save(transactionBuilder1);
+
+        Account accountBuilder2 = Account.builder().
+                accountId(transferRequest.getDestinationAccountId()).
+                fullAccountId(destinationAccount.get().getFullAccountId()).
+                accountTypeId(destinationAccount.get().getAccountTypeId()).
+                clientId(destinationAccount.get().getClientId()).
+                bankId(destinationAccount.get().getBankId()).
+                balance(destinationAccount.get().getBalance() + transferRequest.getAmount()).
+                build();
+        accountRepository.save(accountBuilder2);
+
+        Transaction transactionBuilder2 = Transaction.builder().
+                clientId(destinationAccount.get().getClientId()).
+                bankId(destinationAccount.get().getBankId()).
+                amount(transferRequest.getAmount()).
+                accountId(transferRequest.getDestinationAccountId()).
+                transactionData(timestamp).
+                completed(true).
+                transactionTypeId(1L).
+                build();
+        transactionRepository.save(transactionBuilder2);
+
+        return new OutputBody(ConstantMessages.ACCOUNT_MONEY_TRANSFERRED_SUCCESS, timestamp, Status.OK, null);
     }
 }
