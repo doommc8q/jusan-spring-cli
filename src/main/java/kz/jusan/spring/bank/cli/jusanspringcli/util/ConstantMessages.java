@@ -11,6 +11,7 @@ public class ConstantMessages {
     public final static String ACCOUNT_NOTHING_TO_UPDATE = "Nothing to update in account";
     public final static String ACCOUNT_NOT_WITHDRAWN = "This type of account can not use withdraw";
     public final static String ACCOUNT_NOT_ENOUGH_MONEY = "Not enough money";
-
+    public final static String ACCOUNT_MONEY_TRANSFERRED_SUCCESS = "Money transferred between accounts";
+    public final static String ACCOUNT_CON_NOT_SEND_TO_HIMSELF = "Account can't send to himself";
     public final static String INCORRECT_BODY_REQUEST = "Incorrect body request";
 }

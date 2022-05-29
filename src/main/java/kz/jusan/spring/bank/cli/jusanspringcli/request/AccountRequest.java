@@ -1,15 +1,17 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.request;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountRequest {
     String clientId;
     Long bankId;
     String accountType;
-
-    public AccountRequest() {
-    }
 }
