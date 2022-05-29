@@ -6,7 +6,7 @@ import kz.jusan.spring.bank.cli.jusanspringcli.output.OutputBody;
 import kz.jusan.spring.bank.cli.jusanspringcli.repository.AccountRepository;
 import kz.jusan.spring.bank.cli.jusanspringcli.repository.TransactionRepository;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountRequest;
-import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountTransactionBalance;
+import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountTransactionBalanceRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountUpdateRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.TransferRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.util.ConstantMessages;
@@ -153,7 +153,7 @@ public class AccountService {
     }
 
     @Transactional
-    public OutputBody depositTransaction(AccountTransactionBalance accountTransactionBalance, Long accountId, String timestamp) {
+    public OutputBody depositTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId, String timestamp) {
         Optional<Account> account = accountRepository.findById(accountId);
         if (account.isEmpty()) {
             return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
@@ -186,7 +186,7 @@ public class AccountService {
     }
 
     @Transactional
-    public OutputBody withdrawTransaction(AccountTransactionBalance accountTransactionBalance, Long accountId, String timestamp) {
+    public OutputBody withdrawTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId, String timestamp) {
         Optional<Account> account = accountRepository.findById(accountId);
         if (account.isEmpty()) {
             return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);

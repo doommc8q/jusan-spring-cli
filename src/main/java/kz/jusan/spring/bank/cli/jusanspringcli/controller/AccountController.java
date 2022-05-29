@@ -2,21 +2,24 @@ package kz.jusan.spring.bank.cli.jusanspringcli.controller;
 
 import kz.jusan.spring.bank.cli.jusanspringcli.output.OutputBody;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountRequest;
-import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountTransactionBalance;
+import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountTransactionBalanceRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountUpdateRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.TransferRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.util.CurrentData;
 import kz.jusan.spring.bank.cli.jusanspringcli.service.AccountService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/accounts")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountController {
     @Autowired
     AccountService accountService;
 
-    private final CurrentData currentData = new CurrentData();
+    final CurrentData currentData = new CurrentData();
 
     @GetMapping
     public OutputBody getAccounts() {
@@ -49,12 +52,12 @@ public class AccountController {
     }
 
     @PostMapping(value = "/{accountId}/deposit")
-    public OutputBody accountDepositTransaction(@RequestBody AccountTransactionBalance accountTransactionBalance, @PathVariable Long accountId) {
+    public OutputBody accountDepositTransaction(@RequestBody AccountTransactionBalanceRequest accountTransactionBalance, @PathVariable Long accountId) {
         return accountService.depositTransaction(accountTransactionBalance, accountId, currentData.timestamp());
     }
 
     @PostMapping("/{accountId}/withdraw")
-    public OutputBody accountWithdrawTransaction(@RequestBody AccountTransactionBalance accountTransactionBalance, @PathVariable Long accountId) {
+    public OutputBody accountWithdrawTransaction(@RequestBody AccountTransactionBalanceRequest accountTransactionBalance, @PathVariable Long accountId) {
         return accountService.withdrawTransaction(accountTransactionBalance, accountId, currentData.timestamp());
     }
 
