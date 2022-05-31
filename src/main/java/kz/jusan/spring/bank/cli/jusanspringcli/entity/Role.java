@@ -7,14 +7,12 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 
+@AllArgsConstructor
 @Data
 @Builder
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class Role {
     @Id
-    Long userId;
-    String username;
-    String password;
-    String email;
+    Integer id;
+    String roleType;
 }

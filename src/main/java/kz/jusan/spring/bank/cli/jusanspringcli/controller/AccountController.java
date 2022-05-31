@@ -1,6 +1,6 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.controller;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.output.OutputBody;
+import kz.jusan.spring.bank.cli.jusanspringcli.output.BodyResponse;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountTransactionBalanceRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountUpdateRequest;
@@ -22,47 +22,47 @@ public class AccountController {
     final CurrentData currentData = new CurrentData();
 
     @GetMapping
-    public OutputBody getAccounts() {
+    public BodyResponse getAccounts() {
         return accountService.getAccount(currentData.timestamp());
     }
 
     @GetMapping("/{accountId}")
-    public OutputBody getAccountByAccountId(@PathVariable Long accountId) {
+    public BodyResponse getAccountByAccountId(@PathVariable Long accountId) {
         return accountService.getAccountByAccountId(accountId, currentData.timestamp());
     }
 
     @GetMapping("/{accountId}/transactions")
-    public OutputBody getAccountTransactions(@PathVariable Long accountId) {
+    public BodyResponse getAccountTransactions(@PathVariable Long accountId) {
         return accountService.getAccountTransactions(accountId, currentData.timestamp());
     }
 
     @PostMapping
-    public OutputBody createAccount(@RequestBody AccountRequest accountRequest) {
+    public BodyResponse createAccount(@RequestBody AccountRequest accountRequest) {
         return accountService.createAccount(accountRequest, currentData.timestamp());
     }
 
     @PutMapping("/{accountId}")
-    public OutputBody updateAccount(@RequestBody AccountUpdateRequest accountUpdateRequest, @PathVariable Long accountId) {
+    public BodyResponse updateAccount(@RequestBody AccountUpdateRequest accountUpdateRequest, @PathVariable Long accountId) {
         return accountService.updateAccount(accountUpdateRequest, accountId, currentData.timestamp());
     }
 
     @DeleteMapping("/{accountId}")
-    public OutputBody deleteStudent(@PathVariable Long accountId) {
+    public BodyResponse deleteStudent(@PathVariable Long accountId) {
         return accountService.deleteAccount(accountId, currentData.timestamp());
     }
 
     @PostMapping(value = "/{accountId}/deposit")
-    public OutputBody accountDepositTransaction(@RequestBody AccountTransactionBalanceRequest accountTransactionBalance, @PathVariable Long accountId) {
+    public BodyResponse accountDepositTransaction(@RequestBody AccountTransactionBalanceRequest accountTransactionBalance, @PathVariable Long accountId) {
         return accountService.depositTransaction(accountTransactionBalance, accountId, currentData.timestamp());
     }
 
     @PostMapping("/{accountId}/withdraw")
-    public OutputBody accountWithdrawTransaction(@RequestBody AccountTransactionBalanceRequest accountTransactionBalance, @PathVariable Long accountId) {
+    public BodyResponse accountWithdrawTransaction(@RequestBody AccountTransactionBalanceRequest accountTransactionBalance, @PathVariable Long accountId) {
         return accountService.withdrawTransaction(accountTransactionBalance, accountId, currentData.timestamp());
     }
 
     @PostMapping("/{accountId}/transfer")
-    public OutputBody transferMoneyBetweenAccounts(@RequestBody TransferRequest transferRequest, @PathVariable Long accountId) {
+    public BodyResponse transferMoneyBetweenAccounts(@RequestBody TransferRequest transferRequest, @PathVariable Long accountId) {
         return accountService.transferMoneyBetweenAccounts(transferRequest, accountId, currentData.timestamp());
     }
 }

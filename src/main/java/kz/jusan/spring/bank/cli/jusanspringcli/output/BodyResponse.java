@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response.Status;
 
 @Data
 @AllArgsConstructor
-public class OutputBody {
+public class BodyResponse {
     private String message;
     private String timestamp;
     private Status statusCode;

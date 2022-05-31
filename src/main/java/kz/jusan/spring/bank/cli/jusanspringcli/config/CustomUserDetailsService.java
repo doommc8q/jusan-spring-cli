@@ -1,24 +1,27 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.config;
 
-import kz.jusan.spring.bank.cli.jusanspringcli.entity.User;
-import kz.jusan.spring.bank.cli.jusanspringcli.repository.UserRepository;
-import kz.jusan.spring.bank.cli.jusanspringcli.security.SecurityUser;
-import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
+import kz.jusan.spring.bank.cli.jusanspringcli.entity.Users;
+import kz.jusan.spring.bank.cli.jusanspringcli.service.UserService;
+import kz.jusan.spring.bank.cli.jusanspringcli.util.CurrentData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
-@Service
+@Component
 public class CustomUserDetailsService implements UserDetailsService {
-    private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
+
+
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> {
-                    throw new UsernameNotFoundException("User doesn't exist");
-                }
-        );
-        return new SecurityUser(user);
+    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        CurrentData currentData = new CurrentData();
+        Users user =(Users) userService.getUserByUsername(username, currentData.timestamp()).getBody();
+        if (user == null) {
+            return null;
+        }
+        return CustomUserDetails.fromUserEntityToCustomUserDetails(user);
+
     }
 }

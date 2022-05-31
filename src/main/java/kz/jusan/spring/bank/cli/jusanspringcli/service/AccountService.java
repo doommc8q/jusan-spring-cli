@@ -2,7 +2,7 @@ package kz.jusan.spring.bank.cli.jusanspringcli.service;
 
 import kz.jusan.spring.bank.cli.jusanspringcli.entity.Account;
 import kz.jusan.spring.bank.cli.jusanspringcli.entity.Transaction;
-import kz.jusan.spring.bank.cli.jusanspringcli.output.OutputBody;
+import kz.jusan.spring.bank.cli.jusanspringcli.output.BodyResponse;
 import kz.jusan.spring.bank.cli.jusanspringcli.repository.AccountRepository;
 import kz.jusan.spring.bank.cli.jusanspringcli.repository.TransactionRepository;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountRequest;
@@ -10,7 +10,9 @@ import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountTransactionBalance
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountUpdateRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.TransferRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.util.ConstantMessages;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,40 +23,41 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountService {
-    private AccountRepository accountRepository;
-    private TransactionRepository transactionRepository;
+    AccountRepository accountRepository;
+    TransactionRepository transactionRepository;
 
-    public OutputBody getAccount(String timestamp) {
+    public BodyResponse getAccount(String timestamp) {
         Iterable<Account> iterable = accountRepository.findAll();
-        return new OutputBody(ConstantMessages.ACCOUNT_LIST, timestamp, Status.OK, Streamable.of(iterable).toList());
+        return new BodyResponse(ConstantMessages.ACCOUNT_LIST, timestamp, Status.OK, Streamable.of(iterable).toList());
     }
 
-    public OutputBody getAccountByAccountId(Long accountId, String timestamp) {
+    public BodyResponse getAccountByAccountId(Long accountId, String timestamp) {
         if (accountRepository.findById(accountId).isEmpty()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
 
-        return new OutputBody(ConstantMessages.ACCOUNT_DATA, timestamp, Status.OK, accountRepository.findById(accountId));
+        return new BodyResponse(ConstantMessages.ACCOUNT_DATA, timestamp, Status.OK, accountRepository.findById(accountId));
     }
 
-    public OutputBody getAccountTransactions(Long accountId, String timestamp) {
+    public BodyResponse getAccountTransactions(Long accountId, String timestamp) {
         Optional<Account> account = accountRepository.findById(accountId);
         if (account.isEmpty()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
 
         Iterable<Transaction> iterable = transactionRepository.findAllByAccountId(accountId);
-        return new OutputBody(ConstantMessages.ACCOUNT_DATA, timestamp, Status.OK, Streamable.of(iterable).toList());
+        return new BodyResponse(ConstantMessages.ACCOUNT_DATA, timestamp, Status.OK, Streamable.of(iterable).toList());
     }
 
     @Transactional
-    public OutputBody createAccount(AccountRequest accountRequest, String timestamp) {
+    public BodyResponse createAccount(AccountRequest accountRequest, String timestamp) {
         long accountType = 0L;
         if (accountRequest.getAccountType() == null
                 || accountRequest.getClientId() == null
                 || accountRequest.getBankId() == null) {
-            return new OutputBody(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
+            return new BodyResponse(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
         }
 
         switch (accountRequest.getAccountType().toLowerCase()) {
@@ -66,17 +69,17 @@ public class AccountService {
         try {
             Double num = Double.parseDouble(accountRequest.getClientId());
         } catch (NumberFormatException e) {
-            return new OutputBody(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
+            return new BodyResponse(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
         }
 
         if (accountType == 0L || accountRequest.getClientId().equals("") || accountRequest.getBankId() < 1)
-            return new OutputBody(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
+            return new BodyResponse(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
 
         Account account = Account.builder().build();
         Account accountWithoutFID = accountRepository.save(account);
 
         if (accountRepository.findById(accountWithoutFID.getAccountId()).isEmpty()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
 
         String fullAccountId = String.format("%03d%06d", accountRequest.getBankId(), accountWithoutFID.getAccountId());
@@ -89,13 +92,13 @@ public class AccountService {
                 balance(0.0).
                 build();
 
-        return new OutputBody(ConstantMessages.ACCOUNT_CREATED, timestamp, Status.OK, accountRepository.save(accountBuilder));
+        return new BodyResponse(ConstantMessages.ACCOUNT_CREATED, timestamp, Status.OK, accountRepository.save(accountBuilder));
     }
 
-    public OutputBody updateAccount(AccountUpdateRequest accountUpdateRequest, Long accountId, String timestamp) {
+    public BodyResponse updateAccount(AccountUpdateRequest accountUpdateRequest, Long accountId, String timestamp) {
         Optional<Account> account = accountRepository.findById(accountId);
         if (account.isEmpty()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
         boolean didUpdated = false;
         boolean didUpdatedBody = false;
@@ -104,13 +107,13 @@ public class AccountService {
                 Double num = Double.parseDouble(accountUpdateRequest.getClientId());
             }
         } catch (NumberFormatException e) {
-            return new OutputBody(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
+            return new BodyResponse(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
         }
 
         if (accountUpdateRequest.getClientId() != null &&
                 accountUpdateRequest.getBankId() != null &&
                 (accountUpdateRequest.getClientId().equals("") || accountUpdateRequest.getBankId() < 1))
-            return new OutputBody(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
+            return new BodyResponse(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
 
 
         if (accountUpdateRequest.getBankId() == null) accountUpdateRequest.setBankId(account.get().getBankId());
@@ -123,7 +126,7 @@ public class AccountService {
 
 
         if (!didUpdated || !didUpdatedBody)
-            return new OutputBody(ConstantMessages.ACCOUNT_NOTHING_TO_UPDATE, timestamp, Status.NOT_MODIFIED, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOTHING_TO_UPDATE, timestamp, Status.NOT_MODIFIED, null);
 
         String fullAccountId = String.format("%03d%06d", accountUpdateRequest.getBankId(), account.get().getAccountId());
 
@@ -136,31 +139,31 @@ public class AccountService {
                 balance(account.get().getBalance()).
                 build();
 
-        return new OutputBody(ConstantMessages.ACCOUNT_UPDATED, timestamp, Status.OK, accountRepository.save(accountBuilder));
+        return new BodyResponse(ConstantMessages.ACCOUNT_UPDATED, timestamp, Status.OK, accountRepository.save(accountBuilder));
     }
 
     @Transactional
-    public OutputBody deleteAccount(Long accountId, String timestamp) {
+    public BodyResponse deleteAccount(Long accountId, String timestamp) {
         if (accountRepository.findById(accountId).isEmpty()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
         Iterable<Transaction> iterable = transactionRepository.findAllByAccountId(accountId);
         if (Streamable.of(iterable).toList().size() > 0) {
             transactionRepository.deleteByAccountId(accountId);
         }
         accountRepository.deleteById(accountId);
-        return new OutputBody(ConstantMessages.ACCOUNT_DELETED, timestamp, Status.OK, null);
+        return new BodyResponse(ConstantMessages.ACCOUNT_DELETED, timestamp, Status.OK, null);
     }
 
     @Transactional
-    public OutputBody depositTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId, String timestamp) {
+    public BodyResponse depositTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId, String timestamp) {
         Optional<Account> account = accountRepository.findById(accountId);
         if (account.isEmpty()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
 
         if (accountTransactionBalance.getAmount() < 0) {
-            return new OutputBody(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
+            return new BodyResponse(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
         }
         Account accountBuilder = Account.builder().
                 accountId(accountId).
@@ -182,26 +185,26 @@ public class AccountService {
                 build();
         transactionRepository.save(transactionBuilder);
 
-        return new OutputBody(ConstantMessages.ACCOUNT_BALANCE_CHANGED, timestamp, Status.OK, depositTransaction);
+        return new BodyResponse(ConstantMessages.ACCOUNT_BALANCE_CHANGED, timestamp, Status.OK, depositTransaction);
     }
 
     @Transactional
-    public OutputBody withdrawTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId, String timestamp) {
+    public BodyResponse withdrawTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId, String timestamp) {
         Optional<Account> account = accountRepository.findById(accountId);
         if (account.isEmpty()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
 
         if (account.get().getAccountTypeId() == 3L) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_WITHDRAWN, timestamp, Status.METHOD_NOT_ALLOWED, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_WITHDRAWN, timestamp, Status.METHOD_NOT_ALLOWED, null);
         }
 
         if (accountTransactionBalance.getAmount() < 0) {
-            return new OutputBody(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
+            return new BodyResponse(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
         }
 
         if (accountTransactionBalance.getAmount() > account.get().getBalance()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_ENOUGH_MONEY, timestamp, Status.METHOD_NOT_ALLOWED, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_ENOUGH_MONEY, timestamp, Status.METHOD_NOT_ALLOWED, null);
         }
 
         Account accountBuilder = Account.builder().
@@ -224,33 +227,33 @@ public class AccountService {
                 build();
         transactionRepository.save(transactionBuilder);
 
-        return new OutputBody(ConstantMessages.ACCOUNT_BALANCE_CHANGED, timestamp, Status.OK, withdrawTransaction);
+        return new BodyResponse(ConstantMessages.ACCOUNT_BALANCE_CHANGED, timestamp, Status.OK, withdrawTransaction);
     }
 
     // на фиксед можно  переводить а наорот нельзя
     @Transactional
-    public OutputBody transferMoneyBetweenAccounts(TransferRequest transferRequest, Long accountId, String timestamp) {
+    public BodyResponse transferMoneyBetweenAccounts(TransferRequest transferRequest, Long accountId, String timestamp) {
         Optional<Account> account = accountRepository.findById(accountId);
         Optional<Account> destinationAccount = accountRepository.findById(transferRequest.getDestinationAccountId());
 
         if (account.isEmpty() || destinationAccount.isEmpty()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
 
         if (accountId.equals(transferRequest.getDestinationAccountId())) {
-            return new OutputBody(ConstantMessages.ACCOUNT_CON_NOT_SEND_TO_HIMSELF, timestamp, Status.BAD_REQUEST, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_CON_NOT_SEND_TO_HIMSELF, timestamp, Status.BAD_REQUEST, null);
         }
 
         if (account.get().getAccountTypeId() == 3L) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_WITHDRAWN, timestamp, Status.METHOD_NOT_ALLOWED, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_WITHDRAWN, timestamp, Status.METHOD_NOT_ALLOWED, null);
         }
 
         if (transferRequest.getAmount() < 0) {
-            return new OutputBody(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
+            return new BodyResponse(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
         }
 
         if (transferRequest.getAmount() > account.get().getBalance()) {
-            return new OutputBody(ConstantMessages.ACCOUNT_NOT_ENOUGH_MONEY, timestamp, Status.METHOD_NOT_ALLOWED, null);
+            return new BodyResponse(ConstantMessages.ACCOUNT_NOT_ENOUGH_MONEY, timestamp, Status.METHOD_NOT_ALLOWED, null);
         }
 
         Account accountBuilder1 = Account.builder().
@@ -295,6 +298,6 @@ public class AccountService {
                 build();
         transactionRepository.save(transactionBuilder2);
 
-        return new OutputBody(ConstantMessages.ACCOUNT_MONEY_TRANSFERRED_SUCCESS, timestamp, Status.OK, null);
+        return new BodyResponse(ConstantMessages.ACCOUNT_MONEY_TRANSFERRED_SUCCESS, timestamp, Status.OK, null);
     }
 }
