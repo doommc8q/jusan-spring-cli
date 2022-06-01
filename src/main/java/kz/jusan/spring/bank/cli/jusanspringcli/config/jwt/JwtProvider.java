@@ -1,10 +1,12 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.config.jwt;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.SignatureAlgorithm;
 import kz.jusan.spring.bank.cli.jusanspringcli.entity.Users;
+import kz.jusan.spring.bank.cli.jusanspringcli.output.ParsedToken;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -13,7 +15,8 @@ import java.util.Date;
 public class JwtProvider {
     @Value("${jwt.secret}")
     private String secretKey;
-
+    @Value("${jwt.header}")
+    public String header;
     @Value("${jwt.expired}")
     private Long expTime;
 
@@ -42,5 +45,19 @@ public class JwtProvider {
 
     public String getUsernameFromToken(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public ParsedToken parseFromToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        Object objectId = claims.get("id");
+        String stringToConvert = String.valueOf(objectId);
+        Long id = Long.parseLong(stringToConvert);
+
+        String username = claims.getSubject();
+
+        Object objectRole = claims.get("role");
+        String role = String.valueOf(objectRole);
+
+        return new ParsedToken(username, id, role);
     }
 }

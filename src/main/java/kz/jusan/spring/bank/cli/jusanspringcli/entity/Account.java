@@ -19,4 +19,5 @@ public class Account {
     String clientId;
     Long bankId;
     Double balance;
+    Long userId;
 }

@@ -13,6 +13,6 @@ import org.springframework.data.annotation.Id;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
     @Id
-    Integer id;
+    Long roleId;
     String roleType;
 }

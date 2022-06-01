@@ -1,10 +1,14 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.service;
 
+import kz.jusan.spring.bank.cli.jusanspringcli.config.jwt.JwtProvider;
 import kz.jusan.spring.bank.cli.jusanspringcli.entity.Account;
 import kz.jusan.spring.bank.cli.jusanspringcli.entity.Transaction;
+import kz.jusan.spring.bank.cli.jusanspringcli.entity.Users;
 import kz.jusan.spring.bank.cli.jusanspringcli.output.BodyResponse;
+import kz.jusan.spring.bank.cli.jusanspringcli.output.ParsedToken;
 import kz.jusan.spring.bank.cli.jusanspringcli.repository.AccountRepository;
 import kz.jusan.spring.bank.cli.jusanspringcli.repository.TransactionRepository;
+import kz.jusan.spring.bank.cli.jusanspringcli.repository.UserRepository;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountTransactionBalanceRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.request.AccountUpdateRequest;
@@ -17,6 +21,7 @@ import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import java.util.Optional;
@@ -28,21 +33,41 @@ public class AccountService {
     AccountRepository accountRepository;
     TransactionRepository transactionRepository;
 
-    public BodyResponse getAccount(String timestamp) {
-        Iterable<Account> iterable = accountRepository.findAll();
+    UserRepository userRepository;
+    JwtProvider jwtProvider;
+
+    public BodyResponse getAccount(String token, String timestamp) {
+        ParsedToken parsedToken = jwtProvider.parseFromToken(token);
+        Optional<Users> user = userRepository.findById(parsedToken.getId());
+        if (user.isEmpty()) {
+            return new BodyResponse(ConstantMessages.USER_NOT_EXIST, timestamp, Response.Status.CONFLICT, null);
+        }
+        Iterable<Account> iterable = accountRepository.findAllByUserId(parsedToken.getId());
         return new BodyResponse(ConstantMessages.ACCOUNT_LIST, timestamp, Status.OK, Streamable.of(iterable).toList());
     }
 
-    public BodyResponse getAccountByAccountId(Long accountId, String timestamp) {
-        if (accountRepository.findById(accountId).isEmpty()) {
+    public BodyResponse getAccountByAccountId(Long accountId, String timestamp, String token) {
+        ParsedToken parsedToken = jwtProvider.parseFromToken(token);
+        Optional<Users> user = userRepository.findById(parsedToken.getId());
+        if (user.isEmpty()) {
+            return new BodyResponse(ConstantMessages.USER_NOT_EXIST, timestamp, Response.Status.CONFLICT, null);
+        }
+        Optional<Account> account = accountRepository.findByAccountIdAndUserId(accountId, parsedToken.getId());
+        if (account.isEmpty()) {
             return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
 
-        return new BodyResponse(ConstantMessages.ACCOUNT_DATA, timestamp, Status.OK, accountRepository.findById(accountId));
+        return new BodyResponse(ConstantMessages.ACCOUNT_DATA, timestamp, Status.OK, account.get());
     }
 
-    public BodyResponse getAccountTransactions(Long accountId, String timestamp) {
-        Optional<Account> account = accountRepository.findById(accountId);
+    public BodyResponse getAccountTransactions(Long accountId, String timestamp, String token) {
+        ParsedToken parsedToken = jwtProvider.parseFromToken(token);
+        Optional<Users> user = userRepository.findById(parsedToken.getId());
+        if (user.isEmpty()) {
+            return new BodyResponse(ConstantMessages.USER_NOT_EXIST, timestamp, Response.Status.CONFLICT, null);
+        }
+
+        Optional<Account> account = accountRepository.findByAccountIdAndUserId(accountId, parsedToken.getId());
         if (account.isEmpty()) {
             return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
@@ -52,7 +77,13 @@ public class AccountService {
     }
 
     @Transactional
-    public BodyResponse createAccount(AccountRequest accountRequest, String timestamp) {
+    public BodyResponse createAccount(AccountRequest accountRequest, String timestamp, String token) {
+        ParsedToken parsedToken = jwtProvider.parseFromToken(token);
+        Optional<Users> user = userRepository.findById(parsedToken.getId());
+        if (user.isEmpty()) {
+            return new BodyResponse(ConstantMessages.USER_NOT_EXIST, timestamp, Response.Status.CONFLICT, null);
+        }
+
         long accountType = 0L;
         if (accountRequest.getAccountType() == null
                 || accountRequest.getClientId() == null
@@ -75,7 +106,9 @@ public class AccountService {
         if (accountType == 0L || accountRequest.getClientId().equals("") || accountRequest.getBankId() < 1)
             return new BodyResponse(ConstantMessages.INCORRECT_BODY_REQUEST, timestamp, Status.BAD_REQUEST, null);
 
-        Account account = Account.builder().build();
+        Account account = Account.builder()
+                .userId(parsedToken.getId())
+                .build();
         Account accountWithoutFID = accountRepository.save(account);
 
         if (accountRepository.findById(accountWithoutFID.getAccountId()).isEmpty()) {
@@ -83,20 +116,27 @@ public class AccountService {
         }
 
         String fullAccountId = String.format("%03d%06d", accountRequest.getBankId(), accountWithoutFID.getAccountId());
-        Account accountBuilder = Account.builder().
-                accountId(accountWithoutFID.getAccountId()).
-                fullAccountId(fullAccountId).
-                accountTypeId(accountType).
-                clientId(accountRequest.getClientId()).
-                bankId(accountRequest.getBankId()).
-                balance(0.0).
-                build();
+        Account accountBuilder = Account.builder()
+                .accountId(accountWithoutFID.getAccountId())
+                .fullAccountId(fullAccountId)
+                .accountTypeId(accountType)
+                .clientId(accountRequest.getClientId())
+                .bankId(accountRequest.getBankId())
+                .balance(0.0)
+                .userId(parsedToken.getId())
+                .build();
 
         return new BodyResponse(ConstantMessages.ACCOUNT_CREATED, timestamp, Status.OK, accountRepository.save(accountBuilder));
     }
 
-    public BodyResponse updateAccount(AccountUpdateRequest accountUpdateRequest, Long accountId, String timestamp) {
-        Optional<Account> account = accountRepository.findById(accountId);
+    @Transactional
+    public BodyResponse updateAccount(AccountUpdateRequest accountUpdateRequest, Long accountId, String timestamp, String token) {
+        ParsedToken parsedToken = jwtProvider.parseFromToken(token);
+        Optional<Users> user = userRepository.findById(parsedToken.getId());
+        if (user.isEmpty()) {
+            return new BodyResponse(ConstantMessages.USER_NOT_EXIST, timestamp, Response.Status.CONFLICT, null);
+        }
+        Optional<Account> account = accountRepository.findByAccountIdAndUserId(accountId, parsedToken.getId());
         if (account.isEmpty()) {
             return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
@@ -137,14 +177,20 @@ public class AccountService {
                 clientId(accountUpdateRequest.getClientId()).
                 bankId(accountUpdateRequest.getBankId()).
                 balance(account.get().getBalance()).
+                userId(parsedToken.getId()).
                 build();
 
         return new BodyResponse(ConstantMessages.ACCOUNT_UPDATED, timestamp, Status.OK, accountRepository.save(accountBuilder));
     }
 
     @Transactional
-    public BodyResponse deleteAccount(Long accountId, String timestamp) {
-        if (accountRepository.findById(accountId).isEmpty()) {
+    public BodyResponse deleteAccount(Long accountId, String timestamp, String token) {
+        ParsedToken parsedToken = jwtProvider.parseFromToken(token);
+        Optional<Users> user = userRepository.findById(parsedToken.getId());
+        if (user.isEmpty()) {
+            return new BodyResponse(ConstantMessages.USER_NOT_EXIST, timestamp, Response.Status.CONFLICT, null);
+        }
+        if (accountRepository.findByAccountIdAndUserId(accountId, parsedToken.getId()).isEmpty()) {
             return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
         Iterable<Transaction> iterable = transactionRepository.findAllByAccountId(accountId);
@@ -156,8 +202,14 @@ public class AccountService {
     }
 
     @Transactional
-    public BodyResponse depositTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId, String timestamp) {
-        Optional<Account> account = accountRepository.findById(accountId);
+    public BodyResponse depositTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId,
+                                           String timestamp, String token) {
+        ParsedToken parsedToken = jwtProvider.parseFromToken(token);
+        Optional<Users> user = userRepository.findById(parsedToken.getId());
+        if (user.isEmpty()) {
+            return new BodyResponse(ConstantMessages.USER_NOT_EXIST, timestamp, Response.Status.CONFLICT, null);
+        }
+        Optional<Account> account = accountRepository.findByAccountIdAndUserId(accountId, parsedToken.getId());
         if (account.isEmpty()) {
             return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
@@ -172,6 +224,7 @@ public class AccountService {
                 clientId(account.get().getClientId()).
                 bankId(account.get().getBankId()).
                 balance(account.get().getBalance() + accountTransactionBalance.getAmount()).
+                userId(parsedToken.getId()).
                 build();
         Account depositTransaction = accountRepository.save(accountBuilder);
         Transaction transactionBuilder = Transaction.builder().
@@ -189,8 +242,14 @@ public class AccountService {
     }
 
     @Transactional
-    public BodyResponse withdrawTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId, String timestamp) {
-        Optional<Account> account = accountRepository.findById(accountId);
+    public BodyResponse withdrawTransaction(AccountTransactionBalanceRequest accountTransactionBalance, Long accountId,
+                                            String timestamp, String token) {
+        ParsedToken parsedToken = jwtProvider.parseFromToken(token);
+        Optional<Users> user = userRepository.findById(parsedToken.getId());
+        if (user.isEmpty()) {
+            return new BodyResponse(ConstantMessages.USER_NOT_EXIST, timestamp, Response.Status.CONFLICT, null);
+        }
+        Optional<Account> account = accountRepository.findByAccountIdAndUserId(accountId, parsedToken.getId());
         if (account.isEmpty()) {
             return new BodyResponse(ConstantMessages.ACCOUNT_NOT_EXIST, timestamp, Status.NOT_FOUND, null);
         }
@@ -214,6 +273,7 @@ public class AccountService {
                 clientId(account.get().getClientId()).
                 bankId(account.get().getBankId()).
                 balance(account.get().getBalance() - accountTransactionBalance.getAmount()).
+                userId(parsedToken.getId()).
                 build();
         Account withdrawTransaction = accountRepository.save(accountBuilder);
         Transaction transactionBuilder = Transaction.builder().
@@ -232,8 +292,14 @@ public class AccountService {
 
     // на фиксед можно  переводить а наорот нельзя
     @Transactional
-    public BodyResponse transferMoneyBetweenAccounts(TransferRequest transferRequest, Long accountId, String timestamp) {
-        Optional<Account> account = accountRepository.findById(accountId);
+    public BodyResponse transferMoneyBetweenAccounts(TransferRequest transferRequest, Long accountId, String timestamp,
+                                                     String token) {
+        ParsedToken parsedToken = jwtProvider.parseFromToken(token);
+        Optional<Users> user = userRepository.findById(parsedToken.getId());
+        if (user.isEmpty()) {
+            return new BodyResponse(ConstantMessages.USER_NOT_EXIST, timestamp, Response.Status.CONFLICT, null);
+        }
+        Optional<Account> account = accountRepository.findByAccountIdAndUserId(accountId, parsedToken.getId());
         Optional<Account> destinationAccount = accountRepository.findById(transferRequest.getDestinationAccountId());
 
         if (account.isEmpty() || destinationAccount.isEmpty()) {
@@ -263,6 +329,7 @@ public class AccountService {
                 clientId(account.get().getClientId()).
                 bankId(account.get().getBankId()).
                 balance(account.get().getBalance() - transferRequest.getAmount()).
+                userId(parsedToken.getId()).
                 build();
         accountRepository.save(accountBuilder1);
 
@@ -284,6 +351,7 @@ public class AccountService {
                 clientId(destinationAccount.get().getClientId()).
                 bankId(destinationAccount.get().getBankId()).
                 balance(destinationAccount.get().getBalance() + transferRequest.getAmount()).
+                userId(destinationAccount.get().getUserId()).
                 build();
         accountRepository.save(accountBuilder2);
 

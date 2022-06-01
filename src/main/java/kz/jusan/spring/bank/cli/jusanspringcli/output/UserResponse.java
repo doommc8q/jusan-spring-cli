@@ -1,21 +1,16 @@
-package kz.jusan.spring.bank.cli.jusanspringcli.entity;
+package kz.jusan.spring.bank.cli.jusanspringcli.output;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.Id;
 
 @Data
-@Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Users {
-    @Id
+public class UserResponse {
     Long userId;
     String username;
-    String password;
-
     Long roleId;
 }

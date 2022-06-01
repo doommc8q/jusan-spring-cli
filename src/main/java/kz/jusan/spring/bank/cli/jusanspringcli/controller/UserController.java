@@ -1,33 +1,29 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.output.BodyResponse;
-import kz.jusan.spring.bank.cli.jusanspringcli.request.AuthRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.service.UserService;
 import kz.jusan.spring.bank.cli.jusanspringcli.util.CurrentData;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationController {
+@RequestMapping("/user")
+public class UserController {
     @Autowired
     UserService userService;
 
     final CurrentData currentData = new CurrentData();
 
-
-    @PostMapping("/authenticate")
-    public BodyResponse authenticate(@RequestBody AuthRequest authRequest) {
-        return userService.authenticate(authRequest, currentData.timestamp());
-    }
-
-    @PostMapping("/register")
-    public BodyResponse register(@RequestBody AuthRequest authRequest) {
-        return userService.register(authRequest, currentData.timestamp());
+    @GetMapping
+    public BodyResponse getUser(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").replace("Bearer ", "");
+        return userService.getUser(jwtToken, currentData.timestamp());
     }
 
 }

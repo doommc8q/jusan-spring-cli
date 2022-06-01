@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface RoleRepository  extends CrudRepository<Users, Long> {
-    Optional<Role> findByRoleType(String roleType);
+public interface RoleRepository  extends CrudRepository<Role, Long> {
 }

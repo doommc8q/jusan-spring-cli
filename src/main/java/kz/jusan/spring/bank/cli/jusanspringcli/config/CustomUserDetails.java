@@ -15,11 +15,11 @@ public class CustomUserDetails  implements UserDetails {
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
 
-    public static CustomUserDetails fromUserEntityToCustomUserDetails(Users user) {
+    public static CustomUserDetails fromUserEntityToCustomUserDetails(Users user, String role) {
         CustomUserDetails c = new CustomUserDetails();
         c.username = user.getUsername();
         c.password = user.getPassword();
-        c.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getRoleType()));
+        c.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(role));
         return c;
     }
     @Override
