@@ -1,5 +1,6 @@
 package kz.jusan.spring.bank.cli.jusanspringcli.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import kz.jusan.spring.bank.cli.jusanspringcli.output.BodyResponse;
 import kz.jusan.spring.bank.cli.jusanspringcli.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@SecurityRequirement(name = "Bearer")
 @RequestMapping("/user")
 public class UserController {
     @Autowired
